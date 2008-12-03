@@ -30,6 +30,10 @@ namespace NNLib
 		std::ostringstream m_ostream;
 	};
 
+
+	/**
+	Macro for a better usage of the class defined above.
+	*/
 	#define TO_STRING(MSG) ( std::string(ToString() << MSG) )
 }
 

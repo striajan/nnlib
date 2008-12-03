@@ -9,19 +9,20 @@ namespace NNLib
 {
 
 	/**
-	Simple neuron that can obtain any activation function and any combinator.
+	General that can obtain any activation function and any combinator.
 	*/
 	template <typename T>
 	class Neuron :
-		public NeuronBase< T, ActivationFunc, Combinator >
+		public NeuronBase<T, ActivationFunc, Combinator>
 	{
 	public:
 		Neuron(size_t inputsCount,
-			const ActivationFunc& activationFunc,
-			const Combinator& combinator) :
+			const ActivationFunc<T> *activationFunc,
+			const Combinator<T> *combinator) :
 		NeuronBase(inputsCount, activationFunc, combinator)
 		{ }
 	};
+
 }
 
 #endif

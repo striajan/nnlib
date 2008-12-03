@@ -212,6 +212,10 @@
 				RelativePath=".\neurons\neuronBase.h"
 				>
 			</File>
+			<File
+				RelativePath=".\neurons\perceptron.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="combinators"
@@ -233,7 +237,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\common\random.h"
+				>
+			</File>
+			<File
+				RelativePath=".\common\range.h"
+				>
+			</File>
+			<File
 				RelativePath=".\common\strings.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="initializers"
+			>
+			<File
+				RelativePath=".\initializers\initializer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\initializers\randomInitializer.h"
 				>
 			</File>
 		</Filter>

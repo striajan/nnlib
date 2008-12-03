@@ -16,7 +16,14 @@ namespace NNLib
 		typedef T OutputType;
 
 		/** Combine values from two arrays of the given length. */
-		virtual OutputType operator()(const InputType[], const OutputType[], size_t) const = 0;
+		virtual OutputType combine(const InputType[], const InputType[], size_t) const = 0;
+
+		inline OutputType operator()(const InputType x[], const InputType y[], size_t len)
+		{
+			return combine(x, y, len);
+		}
+
+		virtual ~Combinator() = 0 { }
 	};
 
 }

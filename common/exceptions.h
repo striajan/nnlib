@@ -28,8 +28,8 @@ namespace NNLib
 		}
 
 	protected:
-		const size_t m_index;
-		const size_t m_size;
+		size_t m_index;
+		size_t m_size;
 	};
 
 }
