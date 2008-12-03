@@ -10,13 +10,13 @@ namespace NNLib
 	Interface for an activation function that can be derived according to the functional
 	value. That means that for the given y = f(x) corresponding y' = f'(x) can be found.
 	*/
-	template <typename T, typename R = T>
+	template <typename T>
 	class ValDerivableActivationFunc :
-		public DerivableActivationFunc<T, R>
+		public DerivableActivationFunc<T>
 	{
 	public:
 		/** Evaluate derivation of the function for the given functional value 'y'. */
-		virtual R valDerivation(R y) const = 0;
+		virtual ResultType valDerivation(ResultType y) const = 0;
 	};
 
 }

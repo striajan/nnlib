@@ -14,32 +14,32 @@ namespace NNLib
 	f(x) = ----------------------
 	        1 + exp(-lambda * x)
 	*/
-	template <typename T, typename R = T, typename P = T>
+	template <typename T>
 	class SigmoidFunc :
-		public ValDerivableActivationFunc<T, R>,
-		public LambdaParamFunc<P, 2>
+		public ValDerivableActivationFunc<T>,
+		public LambdaParamFunc<T, 2>
 	{
 	public:
-		SigmoidFunc(P lambda = LambdaParamFunc::DEF_LAMBDA_VAL) :
+		SigmoidFunc(ParamType lambda = DEF_LAMBDA_VAL) :
 		LambdaParamFunc(lambda)
 		{}
 
 		// interface ActivationFunc:
-		R function(T x) const
+		ResultType function(ValueType x) const
 		{
-			return static_cast<R>( 1 / (1 + ::exp(-m_lambda * x)) );
+			return static_cast<ResultType>( 1 / (1 + ::exp(-m_lambda * x)) );
 		}
 
 		// interface DerivableActivationFunc:
-		R derivation(T x) const
+		ResultType derivation(ValueType x) const
 		{
 			return valDerivation( function(x) );
 		}
 
 		// interface ValDerivableActivationFunc:
-		R valDerivation(R y) const
+		ResultType valDerivation(ResultType y) const
 		{
-			return static_cast<R>( m_lambda * y * (1 - y) );
+			return static_cast<ResultType>( m_lambda * y * (1 - y) );
 		}
 	};
 

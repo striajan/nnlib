@@ -11,15 +11,15 @@ namespace NNLib
 	f(x) = 0 ... for x < 0
 	       1 ... for x >= 0
 	*/
-	template <typename T, typename R = T>
+	template <typename T>
 	class HeavisideStepFunc :
-		public ActivationFunc<T, R>
+		public ActivationFunc<T>
 	{
 	public:
 		// interface ActivationFunc:
-		R function(T x) const
+		ResultType function(ValueType x) const
 		{
-			return static_cast<R>( (x < 0) ? 0 : 1 );
+			return static_cast<ResultType>( (x < 0) ? 0 : 1 );
 		}
 	};
 

@@ -7,18 +7,18 @@ namespace NNLib
 	/**
 	Interface for a common activation function of a neuron.
 	*/
-	template <typename T, typename R = T>
+	template <typename T>
 	class ActivationFunc
 	{
 	public:
 		typedef T ValueType;
-		typedef R ResultType;
+		typedef T ResultType;
 
 		/** Evaluate the function for the given 'x'. */
-		virtual R function(T x) const = 0;
+		virtual ResultType function(ValueType x) const = 0;
 
 		/** Evaluate the function for the given 'x'. */
-		inline R operator()(T x) const
+		inline ResultType operator()(ValueType x) const
 		{
 			return function(x);
 		}

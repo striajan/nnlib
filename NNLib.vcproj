@@ -201,6 +201,42 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="neurons"
+			>
+			<File
+				RelativePath=".\neurons\neuron.h"
+				>
+			</File>
+			<File
+				RelativePath=".\neurons\neuronBase.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="combinators"
+			>
+			<File
+				RelativePath=".\combinators\combinator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\combinators\dotProduct.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="common"
+			>
+			<File
+				RelativePath=".\common\exceptions.h"
+				>
+			</File>
+			<File
+				RelativePath=".\common\strings.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\main.cpp"
 			>

@@ -9,13 +9,13 @@ namespace NNLib
 	/**
 	Interface for an activation function that can be derived.
 	*/
-	template <typename T, typename R = T>
+	template <typename T>
 	class DerivableActivationFunc :
-		public ActivationFunc<T, R>
+		public ActivationFunc<T>
 	{
 	public:
 		/** Evaluate derivation of the function for the given 'x'. */
-		virtual R derivation(T x) const = 0;
+		virtual ResultType derivation(ValueType x) const = 0;
 	};
 
 }
