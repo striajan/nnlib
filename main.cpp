@@ -1,11 +1,12 @@
 #include <iostream>
-
 #include "activationFunctions/sigmoidFunc.h"
 #include "activationFunctions/heavisideStepFunc.h"
 #include "activationFunctions/symmetricSigmoidFunc.h"
 #include "combinators/dotProduct.h"
-#include "neurons/neuron.h"
+#include "neurons/neuronBase.h"
+#include "neurons/generalNeuron.h"
 #include "neurons/perceptron.h"
+#include "data/inOutData.h"
 
 using namespace NNLib;
 using std::cout;
@@ -15,7 +16,8 @@ using std::exception;
 int main(int, char *[])
 {
 	// common
-	const size_t INPUTS_COUNT = 8;
+	const size_t INPUTS_COUNT = 4;
+	const size_t OUTPUTS_COUNT = 1;
 	const Range<float> RANGE(-1, 1);
 
 	// activation functions
@@ -32,15 +34,11 @@ int main(int, char *[])
 	// neuron 1 - base with symmetric sigmoid and dot product
 	NeuronBase<float, SymmetricSigmoidFunc, DotProduct>
 		n1(INPUTS_COUNT, &sym, &dot);
-	try {
-		n1.getWeight(INPUTS_COUNT);
-	}
-	catch (exception& ex) {
-		cout << ex.what() << endl;
-	}
+	//try { n1.getWeight(INPUTS_COUNT); }
+	//catch (exception& ex) { cout << ex.what() << endl; }
 
 	// neuron 2 - classic with sigmoid and dot product
-	Neuron<float> n2(INPUTS_COUNT, &sigm, &dot);
+	GeneralNeuron<float> n2(INPUTS_COUNT, &sigm, &dot);
 
 	// random
 	Random<float>::reset();
@@ -52,6 +50,11 @@ int main(int, char *[])
 	float inputs[INPUTS_COUNT] = {1};
 	float res = perc.eval(inputs);
 	cout << res << endl;
+
+	// patterns and expected outputs
+	float in[INPUTS_COUNT], out[OUTPUTS_COUNT];
+	InOutData<float> data(INPUTS_COUNT, OUTPUTS_COUNT);
+	data.addCopy(in, out);
 
 	return 0;
 }

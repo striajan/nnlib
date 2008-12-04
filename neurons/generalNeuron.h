@@ -1,5 +1,5 @@
-#ifndef _NEURON_H_
-#define _NEURON_H_
+#ifndef _GENERAL_NEURON_H_
+#define _GENERAL_NEURON_H_
 
 #include "neuronBase.h"
 #include "../activationFunctions/activationFunc.h"
@@ -9,14 +9,14 @@ namespace NNLib
 {
 
 	/**
-	General that can obtain any activation function and any combinator.
+	General neuron that can obtain any activation function and any combinator.
 	*/
 	template <typename T>
-	class Neuron :
+	class GeneralNeuron :
 		public NeuronBase<T, ActivationFunc, Combinator>
 	{
 	public:
-		Neuron(size_t inputsCount,
+		GeneralNeuron(size_t inputsCount,
 			const ActivationFunc<T> *activationFunc,
 			const Combinator<T> *combinator) :
 		NeuronBase(inputsCount, activationFunc, combinator)

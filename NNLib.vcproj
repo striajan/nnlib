@@ -205,7 +205,7 @@
 			Name="neurons"
 			>
 			<File
-				RelativePath=".\neurons\neuron.h"
+				RelativePath=".\neurons\generalNeuron.h"
 				>
 			</File>
 			<File
@@ -248,6 +248,10 @@
 				RelativePath=".\common\strings.h"
 				>
 			</File>
+			<File
+				RelativePath=".\common\utils.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="initializers"
@@ -258,6 +262,14 @@
 			</File>
 			<File
 				RelativePath=".\initializers\randomInitializer.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="data"
+			>
+			<File
+				RelativePath=".\data\inOutData.h"
 				>
 			</File>
 		</Filter>
