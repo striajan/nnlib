@@ -1,6 +1,8 @@
 #ifndef _INITIALIZER_H_
 #define _INITIALIZER_H_
 
+#include "initializerBase.h"
+
 namespace NNLib
 {
 
@@ -8,11 +10,10 @@ namespace NNLib
 	Abstract initializer of an array of objects of the given type.
 	*/
 	template <typename T>
-	class Initializer
+	class Initializer :
+		public InitializerBase<T>
 	{
 	public:
-		typedef T ValType;
-
 		/** Init array of the given length. */
 		virtual void operator()(ValType[], size_t) const = 0;
 

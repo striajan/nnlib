@@ -19,8 +19,12 @@ namespace NNLib
 		public NeuronBase<T, HeavisideStepFunc, DotProduct>
 	{
 	public:
-		Perceptron(size_t inputsCount, const Range<T>& weightsRange) :
+		Perceptron(size_t inputsCount) :
 		NeuronBase(inputsCount)
+		{}
+
+		/** Set random weights from an uniform probability distribution. */
+		void initWeightsUniform(const Range<T>& weightsRange)
 		{
 			RandomUniform<T> random(weightsRange);   // uniform random numbers generator
 			RandomInitializer<T> init(random);       // weights initializer

@@ -1,6 +1,8 @@
 #ifndef _COMBINATOR_H_
 #define _COMBINATOR_H_
 
+#include "combinatorBase.h"
+
 namespace NNLib
 {
 
@@ -9,12 +11,10 @@ namespace NNLib
 	and combines values stored in them.
 	*/
 	template <typename T>
-	class Combinator
+	class Combinator :
+		public CombinatorBase<T>
 	{
 	public:
-		typedef T InputType;
-		typedef T OutputType;
-
 		/** Combine values from two arrays of the given length. */
 		virtual OutputType combine(const InputType[], const InputType[], size_t) const = 0;
 

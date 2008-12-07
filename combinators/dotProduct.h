@@ -1,7 +1,7 @@
 #ifndef _DOT_PRODUCT_H_
 #define _DOT_PRODUCT_H_
 
-#include "combinator.h"
+#include "combinatorBase.h"
 
 namespace NNLib
 {
@@ -11,16 +11,22 @@ namespace NNLib
 	*/
 	template <typename T>
 	class DotProduct :
-		public Combinator<T>
+		public CombinatorBase<T>
 	{
 	public:
 		// interface Combinator:
+
 		OutputType combine(const InputType x[], const InputType y[], size_t len) const
 		{
 			OutputType sum = 0;
 			for (size_t i = 0; i < len; ++i)
 				sum += x[i] * y[i];
 			return sum;
+		}
+
+		inline OutputType operator()(const InputType x[], const InputType y[], size_t len) const
+		{
+			return combine(x, y, len);
 		}
 	};
 

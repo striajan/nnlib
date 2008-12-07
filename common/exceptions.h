@@ -32,6 +32,19 @@ namespace NNLib
 		size_t m_size;
 	};
 
+
+	/**
+	Unexpected null pointer exception.
+	*/
+	class NullPointerException :
+		public std::runtime_error
+	{
+	public:
+		NullPointerException(const std::string& msg) :
+		std::runtime_error( TO_STRING("NullPointerException: " << msg) )
+		{ }
+	};
+
 }
 
 #endif

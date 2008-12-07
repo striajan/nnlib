@@ -177,6 +177,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\activationFunctions\activationFuncBase.h"
+				>
+			</File>
+			<File
 				RelativePath=".\activationFunctions\derivableActivationFunc.h"
 				>
 			</File>
@@ -205,10 +209,6 @@
 			Name="neurons"
 			>
 			<File
-				RelativePath=".\neurons\generalNeuron.h"
-				>
-			</File>
-			<File
 				RelativePath=".\neurons\neuronBase.h"
 				>
 			</File>
@@ -222,6 +222,10 @@
 			>
 			<File
 				RelativePath=".\combinators\combinator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\combinators\combinatorBase.h"
 				>
 			</File>
 			<File
@@ -261,6 +265,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\initializers\initializerBase.h"
+				>
+			</File>
+			<File
 				RelativePath=".\initializers\randomInitializer.h"
 				>
 			</File>
@@ -270,6 +278,18 @@
 			>
 			<File
 				RelativePath=".\data\inOutData.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="feedForward"
+			>
+			<File
+				RelativePath=".\feedForward\feedForwardLayer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\feedForward\feedForwardNetwork.h"
 				>
 			</File>
 		</Filter>

@@ -12,60 +12,50 @@ namespace NNLib
 	Base neuron implementation that uses a lot of template params.
 	*/
 	template < typename T,
-		template <typename T> class ActT,
-		template <typename T> class CombT >
+		template <typename T> class ActivationFuncT,
+		template <typename T> class CombinatorT >
 	class NeuronBase
 	{
 	public:
 		typedef T InputType;
 		typedef T OutputType;
 		typedef T WeightType;
-		typedef ActT<T> ActivationFuncType;
-		typedef CombT<T> CombinatorType;
-		typedef Initializer<T> InitType;
+		typedef ActivationFuncT<T> ActivationFuncType;
+		typedef CombinatorT<T> CombinatorType;
 
-		/** Constructor that takes activation function and combinator as a paramater. */
-		NeuronBase(size_t inputsCount,
-			const ActivationFuncType *activationFunc,
-			const CombinatorType *combinator)
+		/** Basic constructor. */
+		NeuronBase(size_t inputsCount) :
+		m_inputsCount(inputsCount)
 		{
-			init(inputsCount, activationFunc, combinator);
-			m_activationFuncOwner = m_combinatorOwner = false;
-		}
-
-		/** Constructor that creates activation function and combinator. */
-		NeuronBase(size_t inputsCount)
-		{
-			init(inputsCount, new ActivationFuncType(), new CombinatorType());
-			m_activationFuncOwner = m_combinatorOwner = true;
+			m_weights = new WeightType[m_inputsCount];
 		}
 
 		~NeuronBase()
 		{
 			delete [] m_weights;
-			if (m_activationFuncOwner)
-				delete m_activationFunc;
-			if (m_combinatorOwner)
-				delete m_combinator;
 		}
 
 		/** Recompute the output of the neuron for the given input and
 		store it in the cache. */
-		OutputType eval(const InputType input[])
+		inline OutputType evalAndCache(const InputType input[])
 		{
-			m_outputCache = m_activationFunc->function( m_combinator->combine(
-				input, m_weights, m_inputsCount) );
-			return m_outputCache;
+			return ( m_outputCache = eval );
+		}
+
+		/** Recompute the output of the neuron for the given input. */
+		inline OutputType eval(const InputType input[])
+		{
+			return m_activationFunc( m_combinator(input, m_weights, m_inputsCount) );
 		}
 
 		/** Init weights of this neuron with the given initializer. */
-		void initWeights(InitType& initializer)
+		void initWeights(Initializer<WeightType>& initializer)
 		{
 			initializer(m_weights, m_inputsCount);
 		}
 
 		/** Get weight with range checking. */
-		inline const WeightType& getWeight(size_t index) const
+		const WeightType& getWeight(size_t index) const
 		{
 			if (index < 0 || index >= m_inputsCount)
 				throw IndexOutOfArray(index, m_inputsCount);
@@ -74,24 +64,12 @@ namespace NNLib
 
 		inline const WeightType& getBias() const { return m_weights[m_inputsCount-1]; }
 
-		/** Methods without range checkin (but faster). */
+		// methods without range checking
 		inline const WeightType& operator[](size_t index) const { return m_weights[index]; }
 		inline WeightType& operator[](size_t index) { return m_weights[index]; }
 
 		inline size_t getInputsCount() const { return m_inputsCount; }
-		inline OutputType getOutputCache() const { return m_outputCache; }
-
-	protected:
-		void init(size_t inputsCount,
-			const ActivationFuncType *activationFunc,
-			const CombinatorType *combinator)
-		{
-			m_outputCache = static_cast<OutputType>(0);
-			m_inputsCount = inputsCount;
-			m_weights = new WeightType[m_inputsCount];
-			m_activationFunc = activationFunc;
-			m_combinator = combinator;
-		}
+		inline const OutputType& getOutputCache() const { return m_outputCache; }
 
 	protected:
 		/** Lastly computed output value of the neuron. */
@@ -105,15 +83,10 @@ namespace NNLib
 		WeightType *m_weights;
 
 		/** Activation function for this neuron. */
-		const ActivationFuncType *m_activationFunc;
-		bool m_activationFuncOwner;
+		ActivationFuncType m_activationFunc;
 
 		/** Combinator of the input and weights for this neuron. */
-		const CombinatorType *m_combinator;
-		bool m_combinatorOwner;
-
-	private:
-		NeuronBase& operator=(const NeuronBase&);
+		CombinatorType m_combinator;
 	};
 
 }

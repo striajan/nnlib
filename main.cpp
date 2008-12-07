@@ -1,12 +1,13 @@
 #include <iostream>
+#include "common/range.h"
 #include "activationFunctions/sigmoidFunc.h"
 #include "activationFunctions/heavisideStepFunc.h"
 #include "activationFunctions/symmetricSigmoidFunc.h"
 #include "combinators/dotProduct.h"
 #include "neurons/neuronBase.h"
-#include "neurons/generalNeuron.h"
 #include "neurons/perceptron.h"
 #include "data/inOutData.h"
+#include "feedForward/feedForwardLayer.h"
 
 using namespace NNLib;
 using std::cout;
@@ -28,17 +29,13 @@ int main(int, char *[])
 	SymmetricSigmoidFunc<float> sym;
 	cout << sym(0) << endl;
 
-	// combinators
-	DotProduct<float> dot;
-
 	// neuron 1 - base with symmetric sigmoid and dot product
-	NeuronBase<float, SymmetricSigmoidFunc, DotProduct>
-		n1(INPUTS_COUNT, &sym, &dot);
-	//try { n1.getWeight(INPUTS_COUNT); }
-	//catch (exception& ex) { cout << ex.what() << endl; }
+	NeuronBase<float, SymmetricSigmoidFunc, DotProduct> n1(INPUTS_COUNT);
+	try { n1.getWeight(INPUTS_COUNT); }
+	catch (exception& ex) { cout << ex.what() << endl; }
 
 	// neuron 2 - classic with sigmoid and dot product
-	GeneralNeuron<float> n2(INPUTS_COUNT, &sigm, &dot);
+	NeuronBase<float, SigmoidFunc, DotProduct> n2(INPUTS_COUNT);
 
 	// random
 	Random<float>::reset();
@@ -46,8 +43,9 @@ int main(int, char *[])
 	cout << random.next() << endl;
 
 	// perceptron - heaviside step function and dot product
-	Perceptron<float> perc(INPUTS_COUNT, RANGE);
-	float inputs[INPUTS_COUNT] = {1};
+	Perceptron<float> perc(INPUTS_COUNT);
+	perc.initWeightsUniform(RANGE);
+	float inputs[INPUTS_COUNT] = {1,1,1,1};
 	float res = perc.eval(inputs);
 	cout << res << endl;
 
@@ -55,6 +53,10 @@ int main(int, char *[])
 	float in[INPUTS_COUNT], out[OUTPUTS_COUNT];
 	InOutData<float> data(INPUTS_COUNT, OUTPUTS_COUNT);
 	data.addCopy(in, out);
+
+	// feed-forward network
+	typedef NeuronBase<float, SigmoidFunc, DotProduct> Neuron;
+	FeedForwardLayer<Neuron> layer(OUTPUTS_COUNT, INPUTS_COUNT);
 
 	return 0;
 }

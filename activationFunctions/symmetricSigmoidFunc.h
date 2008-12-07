@@ -2,7 +2,7 @@
 #define _SYMMETRIC_SIGMOID_FUNC_H_
 
 #include <cmath>
-#include "valDerivableActivationFunc.h"
+#include "activationFuncBase.h"
 #include "lambdaParamFunc.h"
 
 namespace NNLib
@@ -16,7 +16,7 @@ namespace NNLib
 	*/
 	template <typename T>
 	class SymmetricSigmoidFunc :
-		public ValDerivableActivationFunc<T>,
+		public ActivationFuncBase<T>,
 		public LambdaParamFunc<T, 1>
 	{
 	public:
@@ -25,18 +25,26 @@ namespace NNLib
 		{}
 
 		// interface ActivationFunc:
+
 		ResultType function(ValueType x) const
 		{
 			return static_cast<ResultType>( 2 / (1 + ::exp(-m_lambda * x)) - 1 );
 		}
 
+		inline ResultType operator()(ValueType x)
+		{
+			return function(x);
+		}
+
 		// interface DerivableActivationFunc:
+
 		ResultType derivation(ValueType x) const
 		{
 			return valDerivation( function(x) );
 		}
 
 		// interface ValDerivableActivationFunc:
+
 		ResultType valDerivation(ResultType y) const
 		{
 			return static_cast<ResultType>( 0.5 * m_lambda * (1 - y * y) );
