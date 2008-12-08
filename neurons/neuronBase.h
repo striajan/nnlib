@@ -2,7 +2,6 @@
 #define _NEURON_BASE_H_
 
 #include "../common/exceptions.h"
-#include "../common/range.h"
 #include "../initializers/initializer.h"
 
 namespace NNLib
@@ -61,6 +60,8 @@ namespace NNLib
 				throw IndexOutOfArray(index, m_inputsCount);
 			return m_weights[index];
 		}
+
+		WeightType* getWeights() const { return m_weights; }
 
 		inline const WeightType& getBias() const { return m_weights[m_inputsCount-1]; }
 

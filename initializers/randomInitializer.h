@@ -17,7 +17,7 @@ namespace NNLib
 	public:
 		typedef Random<T> RandomType;
 
-		RandomInitializer(const RandomType& random = RandomUniform<T>) :
+		RandomInitializer(const RandomType& random) :
 		m_random(random)
 		{ }
 

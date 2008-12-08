@@ -19,6 +19,13 @@ namespace NNLib
 		return dest;
 	}
 
+	template <typename T>
+	void deleteRange(T begin, T end)
+	{
+		for (T del = begin; del != end; ++del)
+			delete *del;
+	}
+
 }
 
 #endif

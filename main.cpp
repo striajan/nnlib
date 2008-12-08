@@ -1,13 +1,16 @@
 #include <iostream>
 #include "common/range.h"
+#include "common/random.h"
 #include "activationFunctions/sigmoidFunc.h"
 #include "activationFunctions/heavisideStepFunc.h"
 #include "activationFunctions/symmetricSigmoidFunc.h"
 #include "combinators/dotProduct.h"
 #include "neurons/neuronBase.h"
 #include "neurons/perceptron.h"
-#include "data/inOutData.h"
 #include "feedForward/feedForwardLayer.h"
+#include "feedForward/feedForwardNetwork.h"
+#include "initializers/randomInitializer.h"
+#include "data/inOutData.h"
 
 using namespace NNLib;
 using std::cout;
@@ -18,8 +21,12 @@ int main(int, char *[])
 {
 	// common
 	const size_t INPUTS_COUNT = 4;
+	const size_t H1_COUNT = 2;
 	const size_t OUTPUTS_COUNT = 1;
 	const Range<float> RANGE(-1, 1);
+	const RandomUniform<float> RAND_GEN(RANGE);
+	const RandomInitializer<float> RAND_INIT(RAND_GEN);
+	const float INPUTS[INPUTS_COUNT] = {1,1,1,1};
 
 	// activation functions
 	SigmoidFunc<float> sigm;
@@ -45,18 +52,33 @@ int main(int, char *[])
 	// perceptron - heaviside step function and dot product
 	Perceptron<float> perc(INPUTS_COUNT);
 	perc.initWeightsUniform(RANGE);
-	float inputs[INPUTS_COUNT] = {1,1,1,1};
-	float res = perc.eval(inputs);
+	float res = perc.eval(INPUTS);
 	cout << res << endl;
 
-	// patterns and expected outputs
-	float in[INPUTS_COUNT], out[OUTPUTS_COUNT];
-	InOutData<float> data(INPUTS_COUNT, OUTPUTS_COUNT);
-	data.addCopy(in, out);
-
-	// feed-forward network
+	// feed-forward network typedefs
 	typedef NeuronBase<float, SigmoidFunc, DotProduct> Neuron;
-	FeedForwardLayer<Neuron> layer(OUTPUTS_COUNT, INPUTS_COUNT);
+	typedef FeedForwardLayer<Neuron> Layer;
+	typedef FeedForwardNetwork<Layer> Network;
+
+	// network creation and initialization
+	Network::LayersSizes sizes(2);
+	sizes[0] = H1_COUNT;
+	sizes[1] = OUTPUTS_COUNT;
+	Network net(INPUTS_COUNT, sizes);
+	net.initWeights(RAND_INIT);
+
+	cout << net.getInputsCount() << " " << net.getOutputsCount() << " " <<
+		net.getLayersCount() << endl;
+	
+	const Network::OutputType *out = net.eval(INPUTS);
+	for (size_t i = 0; i < net.getOutputsCount(); ++i)
+		cout << out[i] << " ";
+	cout << endl;
+
+	/*out = net.getOutputCache();
+	for (size_t i = 0; i < net.getOutputsCount(); ++i)
+		cout << out[i] << " ";
+	cout << endl;*/
 
 	return 0;
 }
