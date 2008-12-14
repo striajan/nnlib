@@ -1,7 +1,7 @@
 #ifndef _ACTIVATION_FUNC_H_
 #define _ACTIVATION_FUNC_H_
 
-#include "activationFuncBase.h"
+#include "activationFunctions/activationFuncBase.h"
 
 namespace NNLib
 {

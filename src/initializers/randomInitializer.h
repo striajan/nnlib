@@ -1,7 +1,7 @@
 #ifndef _RANDOM_INITIALIZER_H_
 #define _RANDOM_INITIALIZER_H_
 
-#include "initializer.h"
+#include "initializers/initializer.h"
 #include "common/random.h"
 
 namespace NNLib

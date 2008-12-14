@@ -1,7 +1,7 @@
 #ifndef _COMBINATOR_H_
 #define _COMBINATOR_H_
 
-#include "combinatorBase.h"
+#include "combinators/combinatorBase.h"
 
 namespace NNLib
 {

@@ -1,7 +1,7 @@
 #ifndef _INITIALIZER_H_
 #define _INITIALIZER_H_
 
-#include "initializerBase.h"
+#include "initializers/initializerBase.h"
 
 namespace NNLib
 {

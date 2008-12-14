@@ -2,7 +2,7 @@
 #define _EXCEPTIONS_H_
 
 #include <stdexcept>
-#include "strings.h"
+#include "common/strings.h"
 
 namespace NNLib
 {
@@ -15,7 +15,8 @@ namespace NNLib
 	{
 	public:
 		IndexOutOfArray(size_t index, size_t size) :
-		m_index(index), m_size(size), std::out_of_range( createMsg(index, size) )
+		std::out_of_range( createMsg(index, size) ),
+		m_index(index), m_size(size)
 		{ }
 
 		inline size_t getIndex() const { return m_index; }
@@ -53,8 +54,8 @@ namespace NNLib
 	{
 	public:
 		NonConsistentLayersException(size_t outputs, size_t inputs) :
-		m_outputs(outputs), m_inputs(inputs),
-		std::runtime_error( createMsg(outputs, inputs) )
+		std::runtime_error( createMsg(outputs, inputs) ),
+		m_outputs(outputs), m_inputs(inputs)
 		{ }
 
 		inline size_t getOutputs() const { return m_outputs; }

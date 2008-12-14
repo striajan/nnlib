@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include <iostream>
-#include "activationFuncBase.h"
+#include "activationFunctions/activationFuncBase.h"
 
 namespace NNLib
 {

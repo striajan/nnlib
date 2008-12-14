@@ -1,7 +1,7 @@
 #ifndef _PERCEPTRON_H_
 #define _PERCEPTRON_H_
 
-#include "neuronBase.h"
+#include "neurons/neuronBase.h"
 #include "common/range.h"
 #include "activationFunctions/heavisideStepFunc.h"
 #include "combinators/dotProduct.h"

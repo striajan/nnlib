@@ -1,7 +1,7 @@
 #ifndef _DOT_PRODUCT_H_
 #define _DOT_PRODUCT_H_
 
-#include "combinatorBase.h"
+#include "combinators/combinatorBase.h"
 
 namespace NNLib
 {

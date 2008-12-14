@@ -1,7 +1,7 @@
 #ifndef _VAL_DERIVABLE_ACTIVATION_FUNC_H_
 #define _VAL_DERIVABLE_ACTIVATION_FUNC_H_
 
-#include "derivableActivationFunc.h"
+#include "activationFunctions/derivableActivationFunc.h"
 
 namespace NNLib
 {

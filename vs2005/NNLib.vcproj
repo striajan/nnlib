@@ -17,8 +17,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)/../out/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)/../build/$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			>
@@ -40,6 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="$(SolutionDir)/../src"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -92,8 +93,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)/../out/$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)/../build/$(ConfigurationName)"
 			ConfigurationType="1"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -115,6 +116,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="$(SolutionDir)/../src"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -173,39 +175,39 @@
 			Name="activationFunctions"
 			>
 			<File
-				RelativePath=".\activationFunctions\activationFunc.h"
+				RelativePath="..\src\activationFunctions\activationFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\activationFuncBase.h"
+				RelativePath="..\src\activationFunctions\activationFuncBase.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\derivableActivationFunc.h"
+				RelativePath="..\src\activationFunctions\derivableActivationFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\heavisideStepFunc.h"
+				RelativePath="..\src\activationFunctions\heavisideStepFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\lambdaParamFunc.h"
+				RelativePath="..\src\activationFunctions\lambdaParamFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\sigmoidFunc.h"
+				RelativePath="..\src\activationFunctions\sigmoidFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\symmetricSigmoidFunc.h"
+				RelativePath="..\src\activationFunctions\symmetricSigmoidFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\tabbedSigmoidFunc.h"
+				RelativePath="..\src\activationFunctions\tabbedSigmoidFunc.h"
 				>
 			</File>
 			<File
-				RelativePath=".\activationFunctions\valDerivableActivationFunc.h"
+				RelativePath="..\src\activationFunctions\valDerivableActivationFunc.h"
 				>
 			</File>
 		</Filter>
@@ -213,11 +215,11 @@
 			Name="neurons"
 			>
 			<File
-				RelativePath=".\neurons\neuronBase.h"
+				RelativePath="..\src\neurons\neuronBase.h"
 				>
 			</File>
 			<File
-				RelativePath=".\neurons\perceptron.h"
+				RelativePath="..\src\neurons\perceptron.h"
 				>
 			</File>
 		</Filter>
@@ -225,19 +227,19 @@
 			Name="combinators"
 			>
 			<File
-				RelativePath=".\combinators\combinator.h"
+				RelativePath="..\src\combinators\combinator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\combinators\combinatorBase.h"
+				RelativePath="..\src\combinators\combinatorBase.h"
 				>
 			</File>
 			<File
-				RelativePath=".\combinators\dotProduct.h"
+				RelativePath="..\src\combinators\dotProduct.h"
 				>
 			</File>
 			<File
-				RelativePath=".\combinators\dotProductSSE.h"
+				RelativePath="..\src\combinators\dotProductSSE.h"
 				>
 			</File>
 		</Filter>
@@ -245,23 +247,23 @@
 			Name="common"
 			>
 			<File
-				RelativePath=".\common\exceptions.h"
+				RelativePath="..\src\common\exceptions.h"
 				>
 			</File>
 			<File
-				RelativePath=".\common\random.h"
+				RelativePath="..\src\common\random.h"
 				>
 			</File>
 			<File
-				RelativePath=".\common\range.h"
+				RelativePath="..\src\common\range.h"
 				>
 			</File>
 			<File
-				RelativePath=".\common\strings.h"
+				RelativePath="..\src\common\strings.h"
 				>
 			</File>
 			<File
-				RelativePath=".\common\utils.h"
+				RelativePath="..\src\common\utils.h"
 				>
 			</File>
 		</Filter>
@@ -269,15 +271,15 @@
 			Name="initializers"
 			>
 			<File
-				RelativePath=".\initializers\initializer.h"
+				RelativePath="..\src\initializers\initializer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\initializers\initializerBase.h"
+				RelativePath="..\src\initializers\initializerBase.h"
 				>
 			</File>
 			<File
-				RelativePath=".\initializers\randomInitializer.h"
+				RelativePath="..\src\initializers\randomInitializer.h"
 				>
 			</File>
 		</Filter>
@@ -285,7 +287,7 @@
 			Name="data"
 			>
 			<File
-				RelativePath=".\data\inOutData.h"
+				RelativePath="..\src\data\inOutData.h"
 				>
 			</File>
 		</Filter>
@@ -293,16 +295,16 @@
 			Name="feedForward"
 			>
 			<File
-				RelativePath=".\feedForward\feedForwardLayer.h"
+				RelativePath="..\src\feedForward\feedForwardLayer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\feedForward\feedForwardNetwork.h"
+				RelativePath="..\src\feedForward\feedForwardNetwork.h"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\main.cpp"
+			RelativePath="..\src\main.cpp"
 			>
 		</File>
 	</Files>

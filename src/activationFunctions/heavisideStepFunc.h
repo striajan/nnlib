@@ -1,7 +1,7 @@
 #ifndef _HEAVISIDE_STEP_FUNC_H_
 #define _HEAVISIDE_STEP_FUNC_H_
 
-#include "activationFuncBase.h"
+#include "activationFunctions/activationFuncBase.h"
 
 namespace NNLib
 {

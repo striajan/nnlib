@@ -1,21 +1,21 @@
-#ifndef _SYMMETRIC_SIGMOID_FUNC_H_
-#define _SYMMETRIC_SIGMOID_FUNC_H_
+#ifndef _SIGMOID_FUNC_H_
+#define _SIGMOID_FUNC_H_
 
 #include <cmath>
-#include "activationFuncBase.h"
-#include "lambdaParamFunc.h"
+#include "activationFunctions/activationFuncBase.h"
+#include "activationFunctions/lambdaParamFunc.h"
 
 namespace NNLib
 {
 
 	/**
-	Symmetric sigmoid activation function.
-	                 2
-	f(x) = ---------------------- - 1
+	Sigmoid activation function.
+	                1
+	f(x) = ----------------------
 	        1 + exp(-lambda * x)
 	*/
 	template <typename T>
-	class SymmetricSigmoidFunc :
+	class SigmoidFunc :
 		public ActivationFuncBase<T>,
 		public LambdaParamFunc<T, 1>
 	{
@@ -27,8 +27,9 @@ namespace NNLib
 		typedef typename _ActivationFuncBase::ValueType ValueType;
 		typedef typename _ActivationFuncBase::ResultType ResultType;
 		typedef typename _LambdaParamFunc::ParamType ParamType;
+		using _LambdaParamFunc::DEF_LAMBDA_VAL;
 		
-		SymmetricSigmoidFunc(ParamType lambda = _LambdaParamFunc::DEF_LAMBDA_VAL) :
+		SigmoidFunc(ParamType lambda = _LambdaParamFunc::DEF_LAMBDA_VAL) :
 		_LambdaParamFunc(lambda)
 		{}
 
@@ -36,7 +37,7 @@ namespace NNLib
 
 		ResultType function(ValueType x) const
 		{
-			return static_cast<ResultType>( 2 / (1 + ::exp(-this->m_lambda * x)) - 1 );
+			return static_cast<ResultType>( 1 / (1 + ::exp(-this->m_lambda * x)) );
 		}
 
 		inline ResultType operator()(ValueType x)
@@ -55,7 +56,7 @@ namespace NNLib
 
 		ResultType valDerivation(ResultType y) const
 		{
-			return static_cast<ResultType>( 0.5 * this->m_lambda * (1 - y * y) );
+			return static_cast<ResultType>( this->m_lambda * y * (1 - y) );
 		}
 	};
 

@@ -2,7 +2,7 @@
 #define _DOT_PRODUCT_SSE_H_
 
 #include <xmmintrin.h>
-#include "combinatorBase.h"
+#include "combinators/combinatorBase.h"
 
 namespace NNLib
 {

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="45">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="src" displayName="src" projectFiles="true">
+      <logicalFolder name="activationFunctions"
+                     displayName="activationFunctions"
+                     projectFiles="true">
+        <itemPath>src/activationFunctions/activationFunc.h</itemPath>
+        <itemPath>src/activationFunctions/activationFuncBase.h</itemPath>
+        <itemPath>src/activationFunctions/derivableActivationFunc.h</itemPath>
+        <itemPath>src/activationFunctions/heavisideStepFunc.h</itemPath>
+        <itemPath>src/activationFunctions/lambdaParamFunc.h</itemPath>
+        <itemPath>src/activationFunctions/sigmoidFunc.h</itemPath>
+        <itemPath>src/activationFunctions/symmetricSigmoidFunc.h</itemPath>
+        <itemPath>src/activationFunctions/tabbedSigmoidFunc.h</itemPath>
+        <itemPath>src/activationFunctions/valDerivableActivationFunc.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="combinators" displayName="combinators" projectFiles="true">
+        <itemPath>src/combinators/combinator.h</itemPath>
+        <itemPath>src/combinators/combinatorBase.h</itemPath>
+        <itemPath>src/combinators/dotProduct.h</itemPath>
+        <itemPath>src/combinators/dotProductSSE.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="common" displayName="common" projectFiles="true">
+        <itemPath>src/common/exceptions.h</itemPath>
+        <itemPath>src/common/random.h</itemPath>
+        <itemPath>src/common/range.h</itemPath>
+        <itemPath>src/common/strings.h</itemPath>
+        <itemPath>src/common/utils.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="data" displayName="data" projectFiles="true">
+        <itemPath>src/data/inOutData.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="feedForward" displayName="feedForward" projectFiles="true">
+        <itemPath>src/feedForward/feedForwardLayer.h</itemPath>
+        <itemPath>src/feedForward/feedForwardNetwork.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="initializers"
+                     displayName="initializers"
+                     projectFiles="true">
+        <itemPath>src/initializers/initializer.h</itemPath>
+        <itemPath>src/initializers/initializerBase.h</itemPath>
+        <itemPath>src/initializers/randomInitializer.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="neurons" displayName="neurons" projectFiles="true">
+        <itemPath>src/neurons/neuronBase.h</itemPath>
+        <itemPath>src/neurons/perceptron.h</itemPath>
+      </logicalFolder>
+      <itemPath>src/main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceEncoding>UTF-8</sourceEncoding>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <cCompilerTool>
+          <warningLevel>2</warningLevel>
+        </cCompilerTool>
+        <ccCompilerTool>
+          <includeDirectories>
+            <directoryPath>src</directoryPath>
+          </includeDirectories>
+          <commandLine>-msse</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccCompilerTool>
+        <linkerTool>
+          <output>out/Debug/GNU-Linux-x86</output>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="src/activationFunctions/activationFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/activationFuncBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/derivableActivationFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/heavisideStepFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/lambdaParamFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/sigmoidFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/symmetricSigmoidFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/tabbedSigmoidFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/valDerivableActivationFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/combinator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/combinatorBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/dotProduct.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/dotProductSSE.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/exceptions.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/random.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/range.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/strings.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/utils.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/inOutData.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/feedForward/feedForwardLayer.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/feedForward/feedForwardNetwork.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/initializer.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/initializerBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/randomInitializer.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/main.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/neurons/neuronBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/neurons/perceptron.h">
+        <itemTool>3</itemTool>
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>GNU|GNU</compilerSet>
+        <platform>2</platform>
+      </toolsSet>
+      <compileType>
+        <cCompilerTool>
+          <developmentMode>5</developmentMode>
+          <warningLevel>2</warningLevel>
+        </cCompilerTool>
+        <ccCompilerTool>
+          <developmentMode>6</developmentMode>
+          <includeDirectories>
+            <directoryPath>src</directoryPath>
+          </includeDirectories>
+          <commandLine>-msse</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccCompilerTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <linkerTool>
+          <output>out/Release/GNU-Linux-x86</output>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="src/activationFunctions/activationFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/activationFuncBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/derivableActivationFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/heavisideStepFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/lambdaParamFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/sigmoidFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/symmetricSigmoidFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/tabbedSigmoidFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/activationFunctions/valDerivableActivationFunc.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/combinator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/combinatorBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/dotProduct.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/combinators/dotProductSSE.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/exceptions.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/random.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/range.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/strings.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/common/utils.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/inOutData.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/feedForward/feedForwardLayer.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/feedForward/feedForwardNetwork.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/initializer.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/initializerBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/randomInitializer.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/main.cpp">
+        <itemTool>1</itemTool>
+      </item>
+      <item path="src/neurons/neuronBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/neurons/perceptron.h">
+        <itemTool>3</itemTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
