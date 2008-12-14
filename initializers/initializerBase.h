@@ -11,7 +11,7 @@ namespace NNLib
 	class InitializerBase
 	{
 	public:
-		typedef T ValType;
+		typedef T ValueType;
 	};
 
 }

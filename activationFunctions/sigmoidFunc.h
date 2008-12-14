@@ -17,18 +17,27 @@ namespace NNLib
 	template <typename T>
 	class SigmoidFunc :
 		public ActivationFuncBase<T>,
-		public LambdaParamFunc<T, 2>
+		public LambdaParamFunc<T, 1>
 	{
+	private:
+		typedef ActivationFuncBase<T> _ActivationFuncBase;
+		typedef LambdaParamFunc<T, 1> _LambdaParamFunc;
+		
 	public:
-		SigmoidFunc(ParamType lambda = DEF_LAMBDA_VAL) :
-		LambdaParamFunc(lambda)
+		typedef typename _ActivationFuncBase::ValueType ValueType;
+		typedef typename _ActivationFuncBase::ResultType ResultType;
+		typedef typename _LambdaParamFunc::ParamType ParamType;
+		using _LambdaParamFunc::DEF_LAMBDA_VAL;
+		
+		SigmoidFunc(ParamType lambda = _LambdaParamFunc::DEF_LAMBDA_VAL) :
+		_LambdaParamFunc(lambda)
 		{}
 
 		// interface ActivationFunc:
 
 		ResultType function(ValueType x) const
 		{
-			return static_cast<ResultType>( 1 / (1 + ::exp(-m_lambda * x)) );
+			return static_cast<ResultType>( 1 / (1 + ::exp(-this->m_lambda * x)) );
 		}
 
 		inline ResultType operator()(ValueType x)
@@ -47,7 +56,7 @@ namespace NNLib
 
 		ResultType valDerivation(ResultType y) const
 		{
-			return static_cast<ResultType>( m_lambda * y * (1 - y) );
+			return static_cast<ResultType>( this->m_lambda * y * (1 - y) );
 		}
 	};
 

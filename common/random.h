@@ -3,21 +3,36 @@
 
 #include <cstdlib>
 #include <ctime>
-#include "../common/range.h"
+#include "common/range.h"
 
 namespace NNLib
 {
+	
+	/**
+	Base class for all random classes.
+	*/
+	template <typename T>
+	class RandomBase
+	{
+	public:
+		typedef T ResultType;
+	};
 
+	
 	/**
 	Ancestor for an every random numbers generator class.
 	*/
 	template <typename T>
-	class Random
+	class Random :
+		public RandomBase<T>
 	{
+	private:
+		typedef RandomBase<T> _RandomBase;
+			
 	public:
-		typedef T ResultType;
+		typedef typename _RandomBase::ResultType ResultType;
 
-		virtual ~Random() = 0 { }
+		virtual ~Random() = 0;
 
 		/** Generate next random number. */
 		virtual ResultType next() const = 0;
@@ -41,7 +56,10 @@ namespace NNLib
 			return static_cast<ResultType>(r);
 		}
 	};
-
+	
+	template <typename T>
+	Random<T>::~Random()
+	{ }
 
 	/**
 	Choose random number from an uniform distribution.
@@ -50,19 +68,27 @@ namespace NNLib
 	class RandomUniform :
 		public Random<T>
 	{
+	private:
+		typedef Random<T> _Random;
+		
 	public:
-		RandomUniform(const Range<T>& range) :
+		typedef typename _Random::ResultType ResultType;
+		typedef Range<T> RangeType;
+		
+		RandomUniform(const RangeType& range) :
 		m_range(range)
 		{ }
+		
+		~RandomUniform() { }
 
 		// interface Random:
 		ResultType next() const
 		{
-			return uniformRand() * m_range.getRange() + m_range.getMin();
+			return ( this->uniformRand() * m_range.getRange() + m_range.getMin() );
 		}
 
 	private:
-		const Range<T> m_range;
+		const RangeType m_range;
 
 		RandomUniform& operator=(const RandomUniform&);
 	};

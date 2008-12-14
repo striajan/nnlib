@@ -1,9 +1,9 @@
 #ifndef _FEED_FORWARD_LAYER_
 #define _FEED_FORWARD_LAYER_
 
-#include "../common/exceptions.h"
-#include "../common/utils.h"
-#include "../initializers/initializer.h"
+#include "common/exceptions.h"
+#include "common/utils.h"
+#include "initializers/initializer.h"
 
 namespace NNLib
 {
@@ -49,7 +49,7 @@ namespace NNLib
 		{
 			if (index < 0 || index >= m_neuronsCount)
 				throw IndexOutOfArray(index, m_neuronsCount);
-			if (m_weights[index] == NULL)
+			if (m_neurons[index] == NULL)
 				throw NullPointerException("pointer to NULL couldn't be dereferenced");
 			return (*this)[index];
 		}

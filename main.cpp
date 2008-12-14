@@ -4,7 +4,9 @@
 #include "activationFunctions/sigmoidFunc.h"
 #include "activationFunctions/heavisideStepFunc.h"
 #include "activationFunctions/symmetricSigmoidFunc.h"
+#include "activationFunctions/tabbedSigmoidFunc.h"
 #include "combinators/dotProduct.h"
+#include "combinators/dotProductSSE.h"
 #include "neurons/neuronBase.h"
 #include "neurons/perceptron.h"
 #include "feedForward/feedForwardLayer.h"
@@ -35,6 +37,14 @@ int main(int, char *[])
 	cout << heav(0) << endl;
 	SymmetricSigmoidFunc<float> sym;
 	cout << sym(0) << endl;
+	
+	// tabbed sigmoid
+	TabbedSigmoidFunc<float>::init(1.0f, 0.01f);
+	const float SIGM_TEST[7] = {-3.004f, -2.0009f, -1.09f, 0, 1, 2, 3};
+	TabbedSigmoidFunc<float> tabSigm;
+	for (size_t i = 0; i < 7; ++i)
+		cout << "(" << sigm(SIGM_TEST[i]) << "," << tabSigm(SIGM_TEST[i]) << ") ";
+	cout << endl;
 
 	// neuron 1 - base with symmetric sigmoid and dot product
 	NeuronBase<float, SymmetricSigmoidFunc, DotProduct> n1(INPUTS_COUNT);
@@ -56,7 +66,7 @@ int main(int, char *[])
 	cout << res << endl;
 
 	// feed-forward network typedefs
-	typedef NeuronBase<float, SigmoidFunc, DotProduct> Neuron;
+	typedef NeuronBase<float, TabbedSigmoidFunc, DotProductSSE> Neuron;
 	typedef FeedForwardLayer<Neuron> Layer;
 	typedef FeedForwardNetwork<Layer> Network;
 
@@ -75,10 +85,12 @@ int main(int, char *[])
 		cout << out[i] << " ";
 	cout << endl;
 
-	/*out = net.getOutputCache();
+	out = net.getOutputCache();
 	for (size_t i = 0; i < net.getOutputsCount(); ++i)
 		cout << out[i] << " ";
-	cout << endl;*/
+	cout << endl;
+	
+	TabbedSigmoidFunc<float>::finish();
 
 	return 0;
 }

@@ -1,8 +1,8 @@
 #ifndef _NEURON_BASE_H_
 #define _NEURON_BASE_H_
 
-#include "../common/exceptions.h"
-#include "../initializers/initializer.h"
+#include "common/exceptions.h"
+#include "initializers/initializer.h"
 
 namespace NNLib
 {

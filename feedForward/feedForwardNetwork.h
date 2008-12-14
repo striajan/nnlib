@@ -2,8 +2,8 @@
 #define _FEED_FORWARD_NETWORK_
 
 #include <vector>
-#include "../common/exceptions.h"
-#include "../common/utils.h"
+#include "common/exceptions.h"
+#include "common/utils.h"
 
 namespace NNLib
 {
@@ -39,16 +39,16 @@ namespace NNLib
 
 		const OutputType* eval(const InputType inputs[])
 		{
-			LayersList::iterator end = m_layers.end();
-			for (LayersList::iterator it = m_layers.begin(); it != end; ++it)
+			typename LayersList::iterator end = m_layers.end();
+			for (typename LayersList::iterator it = m_layers.begin(); it != end; ++it)
 				inputs = (*it)->eval(inputs);
 			return inputs;
 		}
 
 		void initWeights(const Initializer<WeightType>& initializer)
 		{
-			LayersList::iterator end = m_layers.end();
-			for (LayersList::iterator it = m_layers.begin(); it != end; ++it)
+			typename LayersList::iterator end = m_layers.end();
+			for (typename LayersList::iterator it = m_layers.begin(); it != end; ++it)
 				(*it)->initWeights(initializer);
 		}
 

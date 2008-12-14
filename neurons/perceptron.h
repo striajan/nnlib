@@ -2,10 +2,10 @@
 #define _PERCEPTRON_H_
 
 #include "neuronBase.h"
-#include "../common/range.h"
-#include "../activationFunctions/heavisideStepFunc.h"
-#include "../combinators/dotProduct.h"
-#include "../initializers/randomInitializer.h"
+#include "common/range.h"
+#include "activationFunctions/heavisideStepFunc.h"
+#include "combinators/dotProduct.h"
+#include "initializers/randomInitializer.h"
 
 namespace NNLib
 {
@@ -18,13 +18,18 @@ namespace NNLib
 	class Perceptron :
 		public NeuronBase<T, HeavisideStepFunc, DotProduct>
 	{
+	private:
+		typedef NeuronBase<T, HeavisideStepFunc, DotProduct> _NeuronBase;
+		
 	public:
+		typedef typename _NeuronBase::WeightType WeightType;
+		
 		Perceptron(size_t inputsCount) :
-		NeuronBase(inputsCount)
-		{}
+		_NeuronBase(inputsCount)
+		{ }
 
 		/** Set random weights from an uniform probability distribution. */
-		void initWeightsUniform(const Range<T>& weightsRange)
+		void initWeightsUniform(const Range<WeightType>& weightsRange)
 		{
 			RandomUniform<T> random(weightsRange);   // uniform random numbers generator
 			RandomInitializer<T> init(random);       // weights initializer

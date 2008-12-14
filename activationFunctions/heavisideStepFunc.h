@@ -15,7 +15,13 @@ namespace NNLib
 	class HeavisideStepFunc :
 		public ActivationFuncBase<T>
 	{
+	private:
+		typedef ActivationFuncBase<T> _ActivationFuncBase;
+		
 	public:
+		typedef typename _ActivationFuncBase::ValueType ValueType;
+		typedef typename _ActivationFuncBase::ResultType ResultType;
+
 		// interface ActivationFunc:
 
 		ResultType function(ValueType x) const

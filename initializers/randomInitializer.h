@@ -2,7 +2,7 @@
 #define _RANDOM_INITIALIZER_H_
 
 #include "initializer.h"
-#include "../common/random.h"
+#include "common/random.h"
 
 namespace NNLib
 {
@@ -14,7 +14,11 @@ namespace NNLib
 	class RandomInitializer :
 		public Initializer<T>
 	{
+	private:
+		typedef Initializer<T> _Initializer;
+		
 	public:
+		typedef typename _Initializer::ValueType ValueType;
 		typedef Random<T> RandomType;
 
 		RandomInitializer(const RandomType& random) :
@@ -22,7 +26,7 @@ namespace NNLib
 		{ }
 
 		// interface Initializer:
-		void operator()(ValType initWhat[], size_t len) const
+		void operator()(ValueType initWhat[], size_t len) const
 		{
 			for (size_t i = 0; i < len; ++i)
 				initWhat[i] = m_random.next();

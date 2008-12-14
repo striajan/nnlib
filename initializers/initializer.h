@@ -13,12 +13,21 @@ namespace NNLib
 	class Initializer :
 		public InitializerBase<T>
 	{
+	private:
+		typedef InitializerBase<T> _InitializerBase;
+		
 	public:
+		typedef typename _InitializerBase::ValueType ValueType;
+		
 		/** Init array of the given length. */
-		virtual void operator()(ValType[], size_t) const = 0;
+		virtual void operator()(ValueType[], size_t) const = 0;
 
-		virtual ~Initializer() = 0 { }
+		virtual ~Initializer() = 0;
 	};
+	
+	template <typename T>
+	Initializer<T>::~Initializer()
+	{ }
 
 }
 

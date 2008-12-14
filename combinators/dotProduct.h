@@ -13,7 +13,13 @@ namespace NNLib
 	class DotProduct :
 		public CombinatorBase<T>
 	{
+	private:
+		typedef CombinatorBase<T> _CombinatorBase;
+	
 	public:
+		typedef typename _CombinatorBase::InputType InputType;
+		typedef typename _CombinatorBase::OutputType OutputType;
+		
 		// interface Combinator:
 
 		OutputType combine(const InputType x[], const InputType y[], size_t len) const

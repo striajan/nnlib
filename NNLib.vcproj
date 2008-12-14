@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\activationFunctions\tabbedSigmoidFunc.h"
+				>
+			</File>
+			<File
 				RelativePath=".\activationFunctions\valDerivableActivationFunc.h"
 				>
 			</File>
@@ -230,6 +234,10 @@
 			</File>
 			<File
 				RelativePath=".\combinators\dotProduct.h"
+				>
+			</File>
+			<File
+				RelativePath=".\combinators\dotProductSSE.h"
 				>
 			</File>
 		</Filter>

@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <utility>
-#include "../common/utils.h"
+#include "common/utils.h"
 
 namespace NNLib
 {

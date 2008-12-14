@@ -7,7 +7,7 @@ namespace NNLib
 	/**
 	Function that uses some lambda as its parameter (whatever it means).
 	*/
-	template<typename T, int DEF_VAL = 0>
+	template<typename T, int DEF_VAL = 1>
 	class LambdaParamFunc
 	{
 	public:
