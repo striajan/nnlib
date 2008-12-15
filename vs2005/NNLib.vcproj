@@ -287,7 +287,27 @@
 			Name="data"
 			>
 			<File
+				RelativePath="..\src\data\dataAccessor.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\data\dataAccessorBase.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\data\inOutData.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\data\iterCycleAccessor.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\data\randomAccessor.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\data\sequentialAccessor.h"
 				>
 			</File>
 		</Filter>
@@ -300,6 +320,14 @@
 			</File>
 			<File
 				RelativePath="..\src\feedForward\feedForwardNetwork.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="backPropagation"
+			>
+			<File
+				RelativePath="..\src\backPropagation\backPropBase.h"
 				>
 			</File>
 		</Filter>

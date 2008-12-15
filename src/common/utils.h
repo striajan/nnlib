@@ -26,6 +26,12 @@ namespace NNLib
 			delete *del;
 	}
 
+	template <typename T>
+	void deleteArrRange(T begin, T end)
+	{
+		for (T del = begin; del != end; ++del)
+			delete [] *del;
+	}
 }
 
 #endif

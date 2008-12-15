@@ -23,7 +23,7 @@ namespace NNLib
 			return function(x);
 		}
 
-		virtual ~ActivationFunc();
+		virtual ~ActivationFunc() = 0;
 	};
 	
 	template <typename T>

@@ -15,6 +15,11 @@
         <itemPath>src/activationFunctions/tabbedSigmoidFunc.h</itemPath>
         <itemPath>src/activationFunctions/valDerivableActivationFunc.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="backPropagation"
+                     displayName="backPropagation"
+                     projectFiles="true">
+        <itemPath>src/backPropagation/backPropBase.h</itemPath>
+      </logicalFolder>
       <logicalFolder name="combinators" displayName="combinators" projectFiles="true">
         <itemPath>src/combinators/combinator.h</itemPath>
         <itemPath>src/combinators/combinatorBase.h</itemPath>
@@ -29,7 +34,12 @@
         <itemPath>src/common/utils.h</itemPath>
       </logicalFolder>
       <logicalFolder name="data" displayName="data" projectFiles="true">
+        <itemPath>src/data/dataAccessor.h</itemPath>
+        <itemPath>src/data/dataAccessorBase.h</itemPath>
         <itemPath>src/data/inOutData.h</itemPath>
+        <itemPath>src/data/iterCycleAccessor.h</itemPath>
+        <itemPath>src/data/randomAccessor.h</itemPath>
+        <itemPath>src/data/sequentialAccessor.h</itemPath>
       </logicalFolder>
       <logicalFolder name="feedForward" displayName="feedForward" projectFiles="true">
         <itemPath>src/feedForward/feedForwardLayer.h</itemPath>
@@ -106,6 +116,9 @@
       <item path="src/activationFunctions/valDerivableActivationFunc.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/backPropBase.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/combinators/combinator.h">
         <itemTool>3</itemTool>
       </item>
@@ -133,7 +146,22 @@
       <item path="src/common/utils.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/data/dataAccessor.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/dataAccessorBase.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/data/inOutData.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/iterCycleAccessor.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/randomAccessor.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/sequentialAccessor.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/feedForward/feedForwardLayer.h">
@@ -215,6 +243,9 @@
       <item path="src/activationFunctions/valDerivableActivationFunc.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/backPropBase.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/combinators/combinator.h">
         <itemTool>3</itemTool>
       </item>
@@ -242,7 +273,22 @@
       <item path="src/common/utils.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/data/dataAccessor.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/dataAccessorBase.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/data/inOutData.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/iterCycleAccessor.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/randomAccessor.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/sequentialAccessor.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/feedForward/feedForwardLayer.h">

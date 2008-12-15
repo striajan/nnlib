@@ -13,6 +13,10 @@
 #include "feedForward/feedForwardNetwork.h"
 #include "initializers/randomInitializer.h"
 #include "data/inOutData.h"
+#include "data/sequentialAccessor.h"
+#include "data/randomAccessor.h"
+#include "data/iterCycleAccessor.h"
+#include "backPropagation/backPropBase.h"
 
 using namespace NNLib;
 using std::cout;
@@ -24,11 +28,14 @@ int main(int, char *[])
 	// common
 	const size_t INPUTS_COUNT = 4;
 	const size_t H1_COUNT = 2;
-	const size_t OUTPUTS_COUNT = 1;
+	const size_t OUTPUTS_COUNT = 4;
 	const Range<float> RANGE(-1, 1);
 	const RandomUniform<float> RAND_GEN(RANGE);
 	const RandomInitializer<float> RAND_INIT(RAND_GEN);
 	const float INPUTS[INPUTS_COUNT] = {1,1,1,1};
+	const float OUTPUTS[OUTPUTS_COUNT] = {1,1,1,1};
+	const size_t ITERS_COUNT = 3;
+	const size_t CYCLES_COUNT = 3;
 
 	// activation functions
 	SigmoidFunc<float> sigm;
@@ -39,7 +46,7 @@ int main(int, char *[])
 	cout << sym(0) << endl;
 	
 	// tabbed sigmoid
-	TabbedSigmoidFunc<float>::init(1.0f, 0.01f);
+	TabbedSigmoidFunc<float>::init(1.0f, 0.001f);
 	const float SIGM_TEST[7] = {-3.004f, -2.0009f, -1.09f, 0, 1, 2, 3};
 	TabbedSigmoidFunc<float> tabSigm;
 	for (size_t i = 0; i < 7; ++i)
@@ -84,12 +91,29 @@ int main(int, char *[])
 	for (size_t i = 0; i < net.getOutputsCount(); ++i)
 		cout << out[i] << " ";
 	cout << endl;
-
 	out = net.getOutputCache();
 	for (size_t i = 0; i < net.getOutputsCount(); ++i)
 		cout << out[i] << " ";
 	cout << endl;
 	
+	// data typedefs
+	typedef InOutPair<float> TrainPatt;
+	typedef InOutData<TrainPatt> TrainData;
+	typedef RandomAccessor<TrainData> RandAccess;
+	typedef SequentialAccessor<TrainData> SeqAccess;
+	typedef IterCycleAccessor<TrainData> ItAccess;
+	
+	// data initialization
+	TrainData data(INPUTS_COUNT, OUTPUTS_COUNT);
+	data.add(INPUTS, OUTPUTS);
+	data.add(INPUTS, OUTPUTS);
+	
+	// iter cycle data accessor test
+	ItAccess itAccess(data, ITERS_COUNT, CYCLES_COUNT);
+	for ( itAccess.begin(); !itAccess.isEnd(); itAccess.next() )
+		itAccess.current();
+	
+	// delete
 	TabbedSigmoidFunc<float>::finish();
 
 	return 0;

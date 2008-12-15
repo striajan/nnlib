@@ -23,8 +23,12 @@ namespace NNLib
 			return combine(x, y, len);
 		}
 
-		virtual ~Combinator() = 0 { }
+		virtual ~Combinator() = 0;
 	};
+	
+	template <typename T>
+	Combinator<T>::~Combinator()
+	{ }
 
 }
 
