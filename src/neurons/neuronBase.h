@@ -72,6 +72,9 @@ namespace NNLib
 		inline size_t getInputsCount() const { return m_inputsCount; }
 		inline const OutputType& getOutputCache() const { return m_outputCache; }
 
+		inline const ActivationFuncType& getActivationFunc() const { return m_activationFunc; }
+		inline const CombinatorType& getCombinator() const { return m_combinator; }
+
 	protected:
 		/** Lastly computed output value of the neuron. */
 		OutputType m_outputCache;

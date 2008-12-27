@@ -83,6 +83,22 @@ namespace NNLib
 		inline size_t getInputsCount() const { return m_layers.front()->getInputsCount(); }
 		inline size_t getOutputsCount() const { return m_layers.back()->getNeuronsCount(); }
 
+		size_t getNeuronsCount() const
+		{
+			size_t neuronsSum = 0;
+			for (size_t layer = 0; layer < getLayersCount(); ++layer)
+				neuronsSum += (*this)[layer].getNeuronsCount();
+			return neuronsSum;
+		}
+
+		size_t getWeightsCount() const
+		{
+			size_t weightsSum = 0;
+			for (size_t layer = 0; layer < getLayersCount(); ++layer)
+				weightsSum += (*this)[layer].getWeightsCount();
+			return weightsSum;
+		}
+
 		inline const OutputType* getOutputCache() const
 		{
 			return m_layers.back()->getOutputCache();
@@ -95,7 +111,12 @@ namespace NNLib
 	protected:
 		void create(size_t inputsCount, const LayersSizes& sizes)
 		{
+			// create the first layer with the given count of inputs
 			LayerPtr layer = new LayerType(sizes[0], inputsCount);
+			pushLayer(layer);
+
+			// create next layers - each one has number of inputs that is equal to the number
+			// of outputs of the previous layer
 			for (size_t i = 1; i < sizes.size(); ++i) {
 				layer = new LayerType( sizes[i], layer->getOutputsCount() );
 				pushLayer(layer);

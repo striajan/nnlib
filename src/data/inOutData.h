@@ -27,8 +27,8 @@ namespace NNLib
 			m_output = output;
 		}
 		
-		inline InputVector getInput() { return m_input; }
-		inline InputVector getOutput() { return m_output; }
+		inline InputVector getInput() const { return m_input; }
+		inline InputVector getOutput() const { return m_output; }
 		
 	private:
 		friend class InOutData< InOutPair<T> >;

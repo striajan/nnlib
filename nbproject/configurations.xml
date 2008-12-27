@@ -19,6 +19,10 @@
                      displayName="backPropagation"
                      projectFiles="true">
         <itemPath>src/backPropagation/backPropBase.h</itemPath>
+        <itemPath>src/backPropagation/learningMomentum.h</itemPath>
+        <itemPath>src/backPropagation/learningRate.h</itemPath>
+        <itemPath>src/backPropagation/weightsStepsEvaluator.h</itemPath>
+        <itemPath>src/backPropagation/weightsUpdater.h</itemPath>
       </logicalFolder>
       <logicalFolder name="combinators" displayName="combinators" projectFiles="true">
         <itemPath>src/combinators/combinator.h</itemPath>
@@ -44,10 +48,12 @@
       <logicalFolder name="feedForward" displayName="feedForward" projectFiles="true">
         <itemPath>src/feedForward/feedForwardLayer.h</itemPath>
         <itemPath>src/feedForward/feedForwardNetwork.h</itemPath>
+        <itemPath>src/feedForward/networkBufferAllocator.h</itemPath>
       </logicalFolder>
       <logicalFolder name="initializers"
                      displayName="initializers"
                      projectFiles="true">
+        <itemPath>src/initializers/constantInitializer.h</itemPath>
         <itemPath>src/initializers/initializer.h</itemPath>
         <itemPath>src/initializers/initializerBase.h</itemPath>
         <itemPath>src/initializers/randomInitializer.h</itemPath>
@@ -119,6 +125,18 @@
       <item path="src/backPropagation/backPropBase.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/learningMomentum.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/backPropagation/learningRate.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/backPropagation/weightsStepsEvaluator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/backPropagation/weightsUpdater.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/combinators/combinator.h">
         <itemTool>3</itemTool>
       </item>
@@ -168,6 +186,12 @@
         <itemTool>3</itemTool>
       </item>
       <item path="src/feedForward/feedForwardNetwork.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/feedForward/networkBufferAllocator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/constantInitializer.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/initializers/initializer.h">
@@ -246,6 +270,18 @@
       <item path="src/backPropagation/backPropBase.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/learningMomentum.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/backPropagation/learningRate.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/backPropagation/weightsStepsEvaluator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/backPropagation/weightsUpdater.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/combinators/combinator.h">
         <itemTool>3</itemTool>
       </item>
@@ -295,6 +331,12 @@
         <itemTool>3</itemTool>
       </item>
       <item path="src/feedForward/feedForwardNetwork.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/feedForward/networkBufferAllocator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/initializers/constantInitializer.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/initializers/initializer.h">

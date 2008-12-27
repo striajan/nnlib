@@ -271,6 +271,10 @@
 			Name="initializers"
 			>
 			<File
+				RelativePath="..\src\initializers\constantInitializer.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\initializers\initializer.h"
 				>
 			</File>
@@ -322,12 +326,32 @@
 				RelativePath="..\src\feedForward\feedForwardNetwork.h"
 				>
 			</File>
+			<File
+				RelativePath="..\src\feedForward\networkBufferAllocator.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="backPropagation"
 			>
 			<File
 				RelativePath="..\src\backPropagation\backPropBase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\learningMomentum.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\learningRate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\weightsStepsEvaluator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\weightsUpdater.h"
 				>
 			</File>
 		</Filter>

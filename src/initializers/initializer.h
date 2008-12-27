@@ -7,7 +7,7 @@ namespace NNLib
 {
 
 	/**
-	Abstract initializer of an array of objects of the given type.
+	Abstract initializer of objects of the given type.
 	*/
 	template <typename T>
 	class Initializer :
@@ -20,7 +20,14 @@ namespace NNLib
 		typedef typename _InitializerBase::ValueType ValueType;
 		
 		/** Init array of the given length. */
-		virtual void operator()(ValueType[], size_t) const = 0;
+		virtual void operator()(ValueType initWhat[], size_t len) const
+		{
+			for (size_t i = 0; i < len; ++i)
+				(*this)( initWhat[i] );
+		}
+		
+		/** Init a single value. */
+		virtual void operator()(ValueType&) const = 0;
 
 		virtual ~Initializer() = 0;
 	};

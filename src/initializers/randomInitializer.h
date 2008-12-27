@@ -8,7 +8,7 @@ namespace NNLib
 {
 
 	/**
-	Abstract initializer of an array of objects of the given type.
+	Random initializer of objects of the given type.
 	*/
 	template <typename T>
 	class RandomInitializer :
@@ -25,11 +25,10 @@ namespace NNLib
 		m_random(random)
 		{ }
 
-		// interface Initializer:
-		void operator()(ValueType initWhat[], size_t len) const
+		// interface Initializer:		
+		void operator()(ValueType& initWhat) const
 		{
-			for (size_t i = 0; i < len; ++i)
-				initWhat[i] = m_random.next();
+			initWhat = m_random.next();
 		}
 
 	protected:

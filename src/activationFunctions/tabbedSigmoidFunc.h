@@ -43,7 +43,7 @@ namespace NNLib
 			return s_table[ static_cast<size_t>( (x + s_offset) * s_mult ) ];
 		}
 
-		inline ResultType operator()(ValueType x)
+		inline ResultType operator()(ValueType x) const
 		{
 			return function(x);
 		}
@@ -122,8 +122,7 @@ namespace NNLib
 		static ValueType s_offset;
 		static ResultType *s_table;
 		static bool s_initialized;
-		
-		
+				
 		static ResultType f(ValueType x)
 		{
 			return static_cast<ResultType>( 1 / (1 + ::exp(-s_lambda * x)) );

@@ -43,7 +43,7 @@ namespace NNLib
 		{
 			if (!m_end) {
 				if (m_iter == m_itersCount) {
-					if (m_pos == m_container.size() - 1) {
+					if (m_pos == this->m_container.size() - 1) {
 						if (m_cycle == m_cyclesCount)
 							m_end = true;
 						else {

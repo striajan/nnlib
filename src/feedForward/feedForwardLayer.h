@@ -61,6 +61,7 @@ namespace NNLib
 		inline size_t getNeuronsCount() const { return m_neuronsCount; }
 		inline size_t getInputsCount() const { return m_inputsCount; }
 		inline size_t getOutputsCount() const { return m_neuronsCount + 1; }
+		inline size_t getWeightsCount() const { return getNeuronsCount() * getInputsCount(); }
 
 		inline const FeedForwardLayer* getPrevLayer() const { return m_prev; }
 

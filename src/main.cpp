@@ -12,11 +12,14 @@
 #include "feedForward/feedForwardLayer.h"
 #include "feedForward/feedForwardNetwork.h"
 #include "initializers/randomInitializer.h"
+#include "initializers/constantInitializer.h"
 #include "data/inOutData.h"
 #include "data/sequentialAccessor.h"
 #include "data/randomAccessor.h"
 #include "data/iterCycleAccessor.h"
 #include "backPropagation/backPropBase.h"
+#include "backPropagation/weightsStepsEvaluator.h"
+#include "backPropagation/weightsUpdater.h"
 
 using namespace NNLib;
 using std::cout;
@@ -32,10 +35,11 @@ int main(int, char *[])
 	const Range<float> RANGE(-1, 1);
 	const RandomUniform<float> RAND_GEN(RANGE);
 	const RandomInitializer<float> RAND_INIT(RAND_GEN);
+	const ConstantInitializer<float> CONST_INIT(1);
 	const float INPUTS[INPUTS_COUNT] = {1,1,1,1};
 	const float OUTPUTS[OUTPUTS_COUNT] = {1,1,1,1};
-	const size_t ITERS_COUNT = 3;
-	const size_t CYCLES_COUNT = 3;
+	const size_t ITERS_COUNT = 2;
+	const size_t CYCLES_COUNT = 10000;
 
 	// activation functions
 	SigmoidFunc<float> sigm;
@@ -82,7 +86,7 @@ int main(int, char *[])
 	sizes[0] = H1_COUNT;
 	sizes[1] = OUTPUTS_COUNT;
 	Network net(INPUTS_COUNT, sizes);
-	net.initWeights(RAND_INIT);
+	net.initWeights(CONST_INIT);
 
 	cout << net.getInputsCount() << " " << net.getOutputsCount() << " " <<
 		net.getLayersCount() << endl;
@@ -112,6 +116,17 @@ int main(int, char *[])
 	ItAccess itAccess(data, ITERS_COUNT, CYCLES_COUNT);
 	for ( itAccess.begin(); !itAccess.isEnd(); itAccess.next() )
 		itAccess.current();
+
+	// back-propagation algorithm
+	typedef BackPropBase<Network, DeltaWeightsStepsEvaluator, StandardUpdater> BackProp;
+	BackProp back(net);
+	back.setLearningRate(0.3f);
+	back.run(itAccess);
+
+	out = net.eval(INPUTS);
+	for (size_t i = 0; i < net.getOutputsCount(); ++i)
+		cout << out[i] << " ";
+	cout << endl;
 	
 	// delete
 	TabbedSigmoidFunc<float>::finish();
