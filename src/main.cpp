@@ -18,7 +18,7 @@
 #include "data/randomAccessor.h"
 #include "data/iterCycleAccessor.h"
 #include "backPropagation/backPropBase.h"
-#include "backPropagation/weightsStepsEvaluator.h"
+#include "backPropagation/gradientEvaluator.h"
 #include "backPropagation/weightsUpdater.h"
 
 using namespace NNLib;
@@ -39,7 +39,7 @@ int main(int, char *[])
 	const float INPUTS[INPUTS_COUNT] = {1,1,1,1};
 	const float OUTPUTS[OUTPUTS_COUNT] = {1,1,1,1};
 	const size_t ITERS_COUNT = 2;
-	const size_t CYCLES_COUNT = 10000;
+	const size_t CYCLES_COUNT = 1000;
 
 	// activation functions
 	SigmoidFunc<float> sigm;
@@ -77,7 +77,7 @@ int main(int, char *[])
 	cout << res << endl;
 
 	// feed-forward network typedefs
-	typedef NeuronBase<float, TabbedSigmoidFunc, DotProductSSE> Neuron;
+	typedef NeuronBase<float, SigmoidFunc, DotProduct> Neuron;
 	typedef FeedForwardLayer<Neuron> Layer;
 	typedef FeedForwardNetwork<Layer> Network;
 
@@ -86,16 +86,12 @@ int main(int, char *[])
 	sizes[0] = H1_COUNT;
 	sizes[1] = OUTPUTS_COUNT;
 	Network net(INPUTS_COUNT, sizes);
-	net.initWeights(CONST_INIT);
+	net.initWeights(RAND_INIT);
 
 	cout << net.getInputsCount() << " " << net.getOutputsCount() << " " <<
 		net.getLayersCount() << endl;
 	
 	const Network::OutputType *out = net.eval(INPUTS);
-	for (size_t i = 0; i < net.getOutputsCount(); ++i)
-		cout << out[i] << " ";
-	cout << endl;
-	out = net.getOutputCache();
 	for (size_t i = 0; i < net.getOutputsCount(); ++i)
 		cout << out[i] << " ";
 	cout << endl;
@@ -110,19 +106,27 @@ int main(int, char *[])
 	// data initialization
 	TrainData data(INPUTS_COUNT, OUTPUTS_COUNT);
 	data.add(INPUTS, OUTPUTS);
-	data.add(INPUTS, OUTPUTS);
 	
 	// iter cycle data accessor test
 	ItAccess itAccess(data, ITERS_COUNT, CYCLES_COUNT);
 	for ( itAccess.begin(); !itAccess.isEnd(); itAccess.next() )
 		itAccess.current();
 
-	// back-propagation algorithm
-	typedef BackPropBase<Network, DeltaWeightsStepsEvaluator, StandardUpdater> BackProp;
-	BackProp back(net);
+	// back-propagation algorithms
+	typedef BackPropBase<Network, DeltaGradientEvaluator, StandardUpdater> StandardBackProp;
+	typedef BackPropBase<Network, DeltaGradientEvaluator, SilvaAlmeidaUpdater> SilvaAlmeida;
+	typedef BackPropBase<Network, DeltaGradientEvaluator, DeltaBarDeltaUpdater> DeltaBarDelta;
+	typedef BackPropBase<Network, DeltaGradientEvaluator, SuperSABUpdater> SuperSAB;
+	typedef BackPropBase<Network, DeltaGradientEvaluator, QuickpropUpdater> Quickprop;
+	//StandardBackProp back(net);
+	//SilvaAlmeida back(net);
+	DeltaBarDelta back(net);
+	//SuperSAB back(net);
+	//Quickprop back(net);
 	back.setLearningRate(0.3f);
+	
+	// run back-propagation and print the result
 	back.run(itAccess);
-
 	out = net.eval(INPUTS);
 	for (size_t i = 0; i < net.getOutputsCount(); ++i)
 		cout << out[i] << " ";

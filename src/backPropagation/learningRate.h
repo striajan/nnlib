@@ -2,6 +2,7 @@
 #define	_LEARNING_RATE_H_
 
 #include "feedForward/networkBufferAllocator.h"
+#include "initializers/constantInitializer.h"
 
 namespace NNLib
 {
@@ -44,7 +45,7 @@ namespace NNLib
 		inline RateType getLearningRate() const { return m_learningRate; }
 		inline void setLearningRate(RateType rate) { m_learningRate = rate; }
 		
-	protected:		
+	protected:
 		RateType m_learningRate;
 	};
 	
@@ -64,11 +65,12 @@ namespace NNLib
 
 		/** Create an array of local learning rates for the given network. */
 		template <typename NetworkT>
-		LocalLearningRate(const NetworkT& network)
+		LocalLearningRate(const NetworkT& network, RateType rate = _LearningRateBase::DEF_LEARNING_RATE)
 		{
 			m_learningRates = createWeightsBuffer<RateType>(network);
-			for (size_t i = 0; i < network.getWeightsCount(); ++i)
-				(**m_learningRates)[i] = _LearningRateBase::DEF_LEARNING_PARAM;
+			m_learningRatesLin = **m_learningRates;
+			m_ratesCount = network.getWeightsCount();
+			setLearningRate(rate);
 		}
 
 		~LocalLearningRate()
@@ -85,10 +87,50 @@ namespace NNLib
 		{
 			m_learningRates[layer][neuron][input] = param;
 		}
+
+		inline RateType getLearningRate(size_t index) const { return m_learningRatesLin[index]; }
+		inline void setLearningRate(size_t index, RateType rate) { m_learningRatesLin[index] = rate; }
+
+		inline void setLearningRate(RateType rate)
+		{
+			ConstantInitializer<RateType> init(rate);
+			init(m_learningRatesLin, m_ratesCount);
+		}
 		
 	protected:
 		/** Local learning rates. */
 		RateType ***m_learningRates;
+		RateType *m_learningRatesLin;
+
+		size_t m_ratesCount;
+	};
+
+
+	/**
+	Adaptive learning rate.
+	*/
+	template <typename T>
+	class AdaptiveRate
+	{
+	public:
+		typedef T RateType;
+
+		AdaptiveRate(RateType up, RateType down) :
+		m_upRate(up), m_downRate(down)
+		{ }
+
+		inline RateType getUpRate() const { return m_upRate; }
+		inline void setUpRate(RateType rate) { m_upRate = rate; }
+
+		inline RateType getDownRate() const { return m_downRate; }
+		inline void setDownRate(RateType rate) { m_downRate = rate; }
+
+	protected:
+		/** Up factor. */
+		RateType m_upRate;
+
+		/** Down factor. */
+		RateType m_downRate;
 	};
 	
 }

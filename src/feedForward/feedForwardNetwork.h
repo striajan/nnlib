@@ -65,6 +65,24 @@ namespace NNLib
 
 			m_layers.push_back(layer);
 		}
+		
+		/** Perform the given function on every input weight of the network. */
+		template <typename Function>
+		inline void forEachWeightForward(Function& func)
+		{
+			const size_t layersCount = getLayersCount();
+			for (size_t layer = 0; layer < layersCount; ++layer)
+				(*this)[layer].forEachWeightForward(func);
+		}
+
+		/** Perform the given function on every neuron of the network. */
+		template <typename Function>
+		inline void forEachNeuronForward(Function& func)
+		{
+			const size_t layersCount = getLayersCount();
+			for (size_t layer = 0; layer < layersCount; ++layer)
+				(*this)[layer].forEachNeuronForward(func);
+		}
 
 		const LayerType& getLayer(size_t index) const
 		{

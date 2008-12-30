@@ -339,15 +339,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\backPropagation\gradientEvaluator.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\backPropagation\learningMomentum.h"
 				>
 			</File>
 			<File
 				RelativePath="..\src\backPropagation\learningRate.h"
-				>
-			</File>
-			<File
-				RelativePath="..\src\backPropagation\weightsStepsEvaluator.h"
 				>
 			</File>
 			<File

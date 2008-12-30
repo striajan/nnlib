@@ -38,8 +38,8 @@ namespace NNLib
 		m_momentum(momentum)
 		{ }
 
-		inline MomentumType getMomentum() const { return m_momentum; }
-		inline void setMomentum(MomentumType momentum) { m_momentum = momentum; }
+		inline MomentumType getLearningMomentum() const { return m_momentum; }
+		inline void setLearningMomentum(MomentumType momentum) { m_momentum = momentum; }
 
 	protected:
 		/** Current value of the momentum. */

@@ -19,9 +19,9 @@
                      displayName="backPropagation"
                      projectFiles="true">
         <itemPath>src/backPropagation/backPropBase.h</itemPath>
+        <itemPath>src/backPropagation/gradientEvaluator.h</itemPath>
         <itemPath>src/backPropagation/learningMomentum.h</itemPath>
         <itemPath>src/backPropagation/learningRate.h</itemPath>
-        <itemPath>src/backPropagation/weightsStepsEvaluator.h</itemPath>
         <itemPath>src/backPropagation/weightsUpdater.h</itemPath>
       </logicalFolder>
       <logicalFolder name="combinators" displayName="combinators" projectFiles="true">
@@ -125,13 +125,13 @@
       <item path="src/backPropagation/backPropBase.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/gradientEvaluator.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/backPropagation/learningMomentum.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/backPropagation/learningRate.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="src/backPropagation/weightsStepsEvaluator.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/backPropagation/weightsUpdater.h">
@@ -270,13 +270,13 @@
       <item path="src/backPropagation/backPropBase.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/gradientEvaluator.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/backPropagation/learningMomentum.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/backPropagation/learningRate.h">
-        <itemTool>3</itemTool>
-      </item>
-      <item path="src/backPropagation/weightsStepsEvaluator.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/backPropagation/weightsUpdater.h">

@@ -54,6 +54,23 @@ namespace NNLib
 			return (*this)[index];
 		}
 
+		/** Perform the given function on every input weight of this layer. */
+		template <typename Function>
+		inline void forEachWeightForward(Function& func)
+		{
+			for (size_t neuron = 0; neuron < m_neuronsCount; ++neuron)
+				for (size_t input = 0; input < m_inputsCount; ++input)
+					func( (*this)[neuron][input] );
+		}
+
+		/** Perform the given function on every neuron of this layer. */
+		template <typename Function>
+		inline void forEachNeuronForward(Function& func)
+		{
+			for (size_t neuron = 0; neuron < m_neuronsCount; ++neuron)
+				func( (*this)[neuron] );
+		}
+
 		// methods without range checkin and not NULL checking
 		inline const NeuronType& operator[](size_t index) const { return *m_neurons[index]; }
 		inline NeuronType& operator[](size_t index) { return *m_neurons[index]; }
@@ -75,7 +92,7 @@ namespace NNLib
 		}
 
 		inline const FeedForwardLayer* getNextLayer() const { return m_next; }
-		
+
 		inline const FeedForwardLayer* setNextLayer(const FeedForwardLayer *next)
 		{
 			const FeedForwardLayer *old = m_next;

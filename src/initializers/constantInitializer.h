@@ -23,10 +23,16 @@ namespace NNLib
 		m_value(value)
 		{ }
 
-		// interface Initializer:		
+		// interface Initializer:
 		void operator()(ValueType& initWhat) const
 		{
 			initWhat = m_value;
+		}
+		
+		void operator()(ValueType initWhat[], size_t len) const
+		{
+			for (size_t i = 0; i < len; ++i)
+				(*this)( initWhat[i] );
 		}
 
 	protected:

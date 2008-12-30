@@ -30,12 +30,12 @@ namespace NNLib
 		WeightsUpdaterType(network),
 		m_network(network)
 		{
-			m_weightSteps = createWeightsBuffer<WeightType>(m_network);
+			m_gradient = createWeightsBuffer<WeightType>(m_network);
 		}
 
 		~BackPropBase()
 		{
-			deleteWeightsBuffer(m_weightSteps);
+			deleteWeightsBuffer(m_gradient);
 		}
 
 		/** Run the back-propagation algorithm. */
@@ -46,8 +46,8 @@ namespace NNLib
 			for ( accessor.begin(); !accessor.isEnd(); accessor.next() ) {
 				const DataType& pattern = accessor.current();
 				m_network.eval( pattern.getInput() );
-				evalWeightsSteps( pattern.getInput(), pattern.getOutput(), m_weightSteps );
-				updateWeights( m_weightSteps );
+				evalGradient( pattern.getInput(), pattern.getOutput(), m_gradient );
+				updateWeights( m_gradient );
 			}
 		}
 
@@ -62,8 +62,8 @@ namespace NNLib
 		/** Network that should be trained. */
 		NetworkType& m_network;
 
-		/** Negative values of derivations for the weights. */
-		WeightType ***m_weightSteps;
+		/** Gradient of the error function (partial derivations of weights). */
+		WeightType ***m_gradient;
 
 	private:
 		BackPropBase& operator=(const BackPropBase&);
