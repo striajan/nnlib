@@ -91,8 +91,8 @@ namespace NNLib
 
 		void reset()
 		{
-			ConstantInitializer<WeightType> init(0);
-			init( m_weightsCache, this->m_network.getWeightsCount() );
+			ConstantInitializer<WeightType>(0)
+				( m_weightsCache, this->m_network.getWeightsCount() );
 		}
 
 	protected:
@@ -166,8 +166,8 @@ namespace NNLib
 
 		void reset()
 		{
-			ConstantInitializer<WeightType> init(0);
-			init( m_gradientCache, this->m_network.getWeightsCount() );
+			ConstantInitializer<WeightType>(0)
+				( m_gradientCache, this->m_network.getWeightsCount() );
 		}
 
 	protected:
@@ -255,8 +255,8 @@ namespace NNLib
 
 		void reset()
 		{
-			ConstantInitializer<WeightType> init(0);
-			init( m_deltasCache, this->m_network.getWeightsCount() );
+			ConstantInitializer<WeightType>(0)
+				( m_deltasCache, this->m_network.getWeightsCount() );
 		}
 
 		inline RateType getInertia() const { return m_inertia; }
@@ -483,10 +483,8 @@ namespace NNLib
 		void reset()
 		{
 			size_t weightsCount = this->m_network.getWeightsCount();
-			ConstantInitializer<WeightType> initGrad(0);
-			initGrad(m_gradientCache, weightsCount);
-			ConstantInitializer<WeightType> initStep(-2);
-			initStep(m_stepsCache, weightsCount);
+			ConstantInitializer<WeightType>(0)(m_gradientCache, weightsCount);
+			ConstantInitializer<WeightType>(-2)(m_stepsCache, weightsCount);
 		}
 
 	protected:

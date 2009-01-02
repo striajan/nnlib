@@ -339,6 +339,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\backPropagation\continuator.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\distance.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\backPropagation\gradientEvaluator.h"
 				>
 			</File>

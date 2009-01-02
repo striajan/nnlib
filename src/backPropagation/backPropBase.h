@@ -2,6 +2,7 @@
 #define	_BACK_PROP_BASE_H_
 
 #include "feedForward/networkBufferAllocator.h"
+#include "backPropagation/continuator.h"
 
 namespace NNLib
 {
@@ -39,13 +40,21 @@ namespace NNLib
 		}
 
 		/** Run the back-propagation algorithm. */
-		template <typename DataAccessT>
-		void run(DataAccessT& accessor)
+		template <typename DataAccessT, typename ContinuatorT>
+		void run(DataAccessT& accessor, ContinuatorT& continuator)
 		{
-			typedef typename DataAccessT::DataType DataType;
-			for ( accessor.begin(); !accessor.isEnd(); accessor.next() ) {
-				const DataType& pattern = accessor.current();
+			for ( accessor.begin(); !accessor.isEnd(); accessor.next() )
+			{
+				const typename DataAccessT::DataType& pattern = accessor.current();
+				
+				// get output for the given input
 				m_network.eval( pattern.getInput() );
+				
+				// check the continuation condition
+				if ( !continuator() )
+					break;
+				
+				// run one step of the back-propagation algorithm
 				evalGradient( pattern.getInput(), pattern.getOutput(), m_gradient );
 				updateWeights( m_gradient );
 			}

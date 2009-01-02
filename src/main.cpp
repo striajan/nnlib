@@ -20,6 +20,8 @@
 #include "backPropagation/backPropBase.h"
 #include "backPropagation/gradientEvaluator.h"
 #include "backPropagation/weightsUpdater.h"
+#include "backPropagation/continuator.h"
+#include "backPropagation/distance.h"
 
 using namespace NNLib;
 using std::cout;
@@ -124,9 +126,14 @@ int main(int, char *[])
 	//SuperSAB back(net);
 	//Quickprop back(net);
 	back.setLearningRate(0.3f);
+
+	// continuator
+	//AlwaysContinue continuator;
+	typedef AverageErrorContinuator<Network, ItAccess, ManhattanDistance> Continuator;
+	Continuator continuator(net, itAccess, 0.08f, 1);
 	
 	// run back-propagation and print the result
-	back.run(itAccess);
+	back.run(itAccess, continuator);
 	out = net.eval(INPUTS);
 	for (size_t i = 0; i < net.getOutputsCount(); ++i)
 		cout << out[i] << " ";
