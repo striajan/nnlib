@@ -30,7 +30,52 @@ namespace NNLib
 
 
 	/**
-	This continuator computes the average error on the network output over the given
+	This continuator computes the average error on the network's output. If this
+	error is smaller than the given error it tells that no continuation is needed.
+	*/
+	template <typename NetworkT,
+		typename DataAccessT,
+		template <typename> class DistanceT>
+	class ErrorContinuator :
+		public ContinuatorBase,
+		protected DistanceT<typename NetworkT::OutputType>
+	{
+	public:
+		typedef NetworkT NetworkType;
+		typedef typename NetworkType::OutputType ErrorType;
+		typedef DataAccessT DataAccessType;
+
+		/** Create continuator for the given network and given data accessor. */
+		ErrorContinuator(const NetworkType& network, const DataAccessType& accessor, ErrorType maxError) :
+		m_network(network), m_accessor(accessor), m_maxError(maxError), m_error(0)
+		{ }
+
+		bool operator()()
+		{
+			m_error = distance( m_network.getOutputCache(),
+				m_accessor.current().getOutput(), m_network.getOutputsCount() );
+			return ( m_error > m_maxError );
+		}
+
+		inline ErrorType getMaxError() const { return m_maxError; }
+		inline ErrorType getError() const { return m_error; }
+
+	protected:
+		const NetworkType& m_network;
+		const DataAccessType& m_accessor;
+
+		/** If an error is smaller than this value the continuation stops. */
+		const ErrorType m_maxError;
+
+		ErrorType m_error;
+
+	private:
+		ErrorContinuator& operator=(const ErrorContinuator&);
+	};
+
+
+	/**
+	This continuator computes the average error on the network's output over the given
 	count of iterations. If this error is smaller than the given error it tells that
 	no continuation is needed.
 	*/
@@ -43,9 +88,7 @@ namespace NNLib
 	{
 	public:
 		typedef NetworkT NetworkType;
-		typedef typename NetworkType::OutputType OutputType;
 		typedef typename NetworkType::OutputType ErrorType;
-		typedef DistanceT<ErrorType> _DistanceBase;
 		typedef DataAccessT DataAccessType;
 
 		/** Create continuator for the given network and given data accessor. */
@@ -78,10 +121,14 @@ namespace NNLib
 			
 			// compute the average error
 			m_errorSum += m_memory[m_pos];
-			const ErrorType avgError = m_errorSum / static_cast<ErrorType>(m_size);
+			m_averageError = m_errorSum / static_cast<ErrorType>(m_size);
 
-			return ( avgError > m_maxError );
+			return ( m_averageError > m_maxError );
 		}
+
+		inline ErrorType getMaxError() const { return m_maxError; }
+		inline ErrorType getAverageError() const { return m_averageError; }
+		inline ErrorType getLastError() const { return m_memory[m_pos]; }
 
 	protected:
 		const NetworkType& m_network;
@@ -95,6 +142,7 @@ namespace NNLib
 
 		ErrorType *m_memory;
 		ErrorType m_errorSum;
+		ErrorType m_averageError;
 		size_t m_size;
 		size_t m_pos;
 

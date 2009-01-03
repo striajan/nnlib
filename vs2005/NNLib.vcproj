@@ -251,6 +251,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\common\mathematics.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\common\random.h"
 				>
 			</File>

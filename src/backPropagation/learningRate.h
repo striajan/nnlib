@@ -132,6 +132,34 @@ namespace NNLib
 		/** Down factor. */
 		RateType m_downRate;
 	};
+
+
+	/**
+	Constraints for a learning rate.
+	*/
+	template <typename T>
+	class MinMaxRate
+	{
+	public:
+		typedef T RateType;
+
+		MinMaxRate(RateType min, RateType max) :
+		m_minRate(min), m_maxRate(max)
+		{ }
+
+		inline RateType getMinRate() const { return m_minRate; }
+		inline void setMinRate(RateType rate) { m_minRate = rate; }
+
+		inline RateType getMaxRate() const { return m_maxRate; }
+		inline void setMaxRate(RateType rate) { m_maxRate = rate; }
+
+	protected:
+		/** Minimal learning rate. */
+		RateType m_minRate;
+
+		/** Maximal learning rate. */
+		RateType m_maxRate;
+	};
 	
 }
 

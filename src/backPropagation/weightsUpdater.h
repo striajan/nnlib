@@ -3,6 +3,7 @@
 
 #include "backPropagation/learningRate.h"
 #include "backPropagation/learningMomentum.h"
+#include "common/mathematics.h"
 #include "initializers/constantInitializer.h"
 
 namespace NNLib
@@ -182,7 +183,7 @@ namespace NNLib
 	template <typename NetworkT>
 	const typename SilvaAlmeidaUpdater<NetworkT>::RateType SilvaAlmeidaUpdater<NetworkT>::DEF_UP_RATE
 		= static_cast<typename SilvaAlmeidaUpdater<NetworkT>::RateType>( 1.2f );
-
+	
 	template <typename NetworkT>
 	const typename SilvaAlmeidaUpdater<NetworkT>::RateType SilvaAlmeidaUpdater<NetworkT>::DEF_DOWN_RATE
 		= static_cast<typename SilvaAlmeidaUpdater<NetworkT>::RateType>( 0.8f );
@@ -282,7 +283,7 @@ namespace NNLib
 	template <typename NetworkT>
 	const typename DeltaBarDeltaUpdater<NetworkT>::RateType DeltaBarDeltaUpdater<NetworkT>::DEF_UP_RATE
 		= static_cast<typename DeltaBarDeltaUpdater<NetworkT>::RateType>( 0.09f );
-
+	
 	template <typename NetworkT>
 	const typename DeltaBarDeltaUpdater<NetworkT>::RateType DeltaBarDeltaUpdater<NetworkT>::DEF_DOWN_RATE
 		= static_cast<typename DeltaBarDeltaUpdater<NetworkT>::RateType>( 0.8f );
@@ -402,19 +403,18 @@ namespace NNLib
 		WeightType m_maxLearningRate;
 		size_t m_index;
 
-		static const RateType DEF_UP_RATE;
-		static const RateType DEF_DOWN_RATE;
+		static const RateType DEF_UP_RATE, DEF_DOWN_RATE;
 		static const RateType DEF_MAX_RATE;
 	};
 
 	template <typename NetworkT>
 	const typename SuperSABUpdater<NetworkT>::RateType SuperSABUpdater<NetworkT>::DEF_UP_RATE
 		= static_cast<typename SuperSABUpdater<NetworkT>::RateType>( 1.05f );
-
+	
 	template <typename NetworkT>
 	const typename SuperSABUpdater<NetworkT>::RateType SuperSABUpdater<NetworkT>::DEF_DOWN_RATE
 		= static_cast<typename SuperSABUpdater<NetworkT>::RateType>( 0.5f );
-
+		
 	template <typename NetworkT>
 	const typename SuperSABUpdater<NetworkT>::RateType SuperSABUpdater<NetworkT>::DEF_MAX_RATE
 		= static_cast<typename SuperSABUpdater<NetworkT>::RateType>( 0.8f );
@@ -501,6 +501,246 @@ namespace NNLib
 			return (weight > NEG) && (weight < POS);
 		}
 	};
+
+
+// RPROP ALGORITHM //////////////////////////////////////////////
+
+	/**
+	Updater used by Rprop algorithm.
+	*/
+	template <typename NetworkT>
+	class RpropUpdater :
+		public WeightsUpdaterBase<NetworkT>,
+		public LocalLearningRate<typename NetworkT::WeightType>,
+		public AdaptiveRate<typename NetworkT::WeightType>
+	{
+	private:
+		typedef WeightsUpdaterBase<NetworkT> _UpdaterBase;
+		typedef LocalLearningRate<typename NetworkT::WeightType> _LearningRateBase;
+		typedef AdaptiveRate<typename NetworkT::WeightType> _AdaptiveRateBase;
+
+	public:
+		typedef typename _UpdaterBase::NetworkType NetworkType;
+		typedef typename _UpdaterBase::WeightType WeightType;
+		typedef typename _LearningRateBase::RateType RateType;
+
+		RpropUpdater(NetworkType& network, RateType up = DEF_UP_RATE, RateType down = DEF_DOWN_RATE) :
+		_UpdaterBase(network), _LearningRateBase(network), _AdaptiveRateBase(up, down)
+		{
+			m_gradientCache = new WeightType[network.getWeightsCount()];
+			reset();
+		}
+
+		~RpropUpdater()
+		{
+			delete [] m_gradientCache;
+		}
+
+		void updateWeights(WeightType ***gradient)
+		{
+			m_gradient = **gradient;
+			m_index = 0;
+			this->m_network.forEachWeightForward( *this );
+		}
+		
+		/** Update one given weight. */
+		void operator()(WeightType& weight)
+		{
+			static const WeightType ZERO_WEIGHT = static_cast<WeightType>(0);
+
+			RateType learningRate = this->getLearningRate(m_index);
+			WeightType signum = m_gradientCache[m_index] * m_gradient[m_index];
+			
+			if (signum >= ZERO_WEIGHT)
+			{
+				// update the weight
+				weight -= learningRate * sgn( m_gradient[m_index] );
+				
+				// increase the learning rate if the maximal value hasn't been already reached
+				if (learningRate < m_maxRate)
+					this->setLearningRate( m_index, learningRate * this->getUpRate() );
+
+				// cache the gradient
+				m_gradientCache[m_index] = m_gradient[m_index];
+			}
+			else if (signum < ZERO_WEIGHT)
+			{
+				// decrease the learning rate if the minimal value hasn't been already reached
+				if (learningRate > m_minRate)
+					this->setLearningRate( m_index, learningRate * this->getDownRate() );
+
+				// don't cache the gradient
+				m_gradientCache[m_index] = m_gradient[m_index];
+			}
+
+			// move to the next weight
+			++m_index;
+		}
+
+		void reset()
+		{
+			ConstantInitializer<WeightType>(0)
+				( m_gradientCache, this->m_network.getWeightsCount() );
+		}
+
+	protected:
+		WeightType *m_gradientCache;
+		WeightType *m_gradient;
+		RateType m_maxRate, m_minRate;
+		size_t m_index;
+
+		static const RateType DEF_UP_RATE, DEF_DOWN_RATE;
+		static const RateType DEF_MAX_RATE, DEF_MIN_RATE;
+	};
+
+	template <typename NetworkT>
+	const typename RpropUpdater<NetworkT>::RateType RpropUpdater<NetworkT>::DEF_UP_RATE
+		= static_cast<typename RpropUpdater<NetworkT>::RateType>( 1.2f );
+	
+	template <typename NetworkT>
+	const typename RpropUpdater<NetworkT>::RateType RpropUpdater<NetworkT>::DEF_DOWN_RATE
+		= static_cast<typename RpropUpdater<NetworkT>::RateType>( 0.8f );
+	
+	template <typename NetworkT>
+	const typename RpropUpdater<NetworkT>::RateType RpropUpdater<NetworkT>::DEF_MAX_RATE
+		= static_cast<typename RpropUpdater<NetworkT>::RateType>( 1.8f );
+		
+	template <typename NetworkT>
+	const typename RpropUpdater<NetworkT>::RateType RpropUpdater<NetworkT>::DEF_MIN_RATE
+		= static_cast<typename RpropUpdater<NetworkT>::RateType>( 0.2f );
+
+
+// QRPROP ALGORITHM //////////////////////////////////////////////
+
+	/**
+	Updater used by QRprop algorithm.
+	*/
+	template <typename NetworkT>
+	class QRpropUpdater :
+		public WeightsUpdaterBase<NetworkT>,
+		public LocalLearningRate<typename NetworkT::WeightType>,
+		public AdaptiveRate<typename NetworkT::WeightType>,
+		public MinMaxRate<typename NetworkT::WeightType>
+	{
+	private:
+		typedef WeightsUpdaterBase<NetworkT> _UpdaterBase;
+		typedef LocalLearningRate<typename NetworkT::WeightType> _LearningRateBase;
+		typedef AdaptiveRate<typename NetworkT::WeightType> _AdaptiveRateBase;
+		typedef MinMaxRate<typename NetworkT::WeightType> _MinMaxRateBase;
+
+	public:
+		typedef typename _UpdaterBase::NetworkType NetworkType;
+		typedef typename _UpdaterBase::WeightType WeightType;
+		typedef typename _LearningRateBase::RateType RateType;
+
+		QRpropUpdater(NetworkType& network, RateType up = DEF_UP_RATE, RateType down = DEF_DOWN_RATE,
+			RateType max = DEF_MAX_RATE, RateType min = DEF_MIN_RATE) :
+		_UpdaterBase(network), _LearningRateBase(network), _AdaptiveRateBase(up, down), _MinMaxRateBase(min, max)
+		{
+			const size_t weightsCount = network.getWeightsCount();
+			m_gradientCache = new WeightType[weightsCount];
+			m_gradientCache2 = new WeightType[weightsCount];
+			m_q = new WeightType[weightsCount];
+			reset();
+		}
+
+		~QRpropUpdater()
+		{
+			delete [] m_gradientCache;
+			delete [] m_gradientCache2;
+			delete [] m_q;
+		}
+
+		void updateWeights(WeightType ***gradient)
+		{
+			m_gradient = **gradient;
+			m_index = 0;
+			this->m_network.forEachWeightForward( *this );
+		}
+		
+		/** Update one given weight. */
+		void operator()(WeightType& weight)
+		{
+			static const WeightType ZERO_WEIGHT = static_cast<WeightType>(0);
+
+			RateType learningRate = this->getLearningRate(m_index);
+			WeightType signum = m_gradientCache[m_index] * m_gradient[m_index];
+			
+			if (signum == ZERO_WEIGHT)
+			{
+				// update q-param
+				RateType downRateInv = static_cast<RateType>(1) / this->getDownRate();
+				if ( m_gradient[m_index] != m_gradientCache2[m_index] ) {
+					WeightType deriv = std::abs( m_gradient[m_index] /
+						(m_gradient[m_index] - m_gradientCache[m_index]) );
+					m_q[m_index] = max( this->getUpRate(), min(downRateInv, deriv) );
+				}
+				else {
+					m_q[m_index] = downRateInv;
+				}
+
+				// update learning rate, weight and cache
+				this->setLearningRate( m_index, max(this->getMinRate(), m_q[m_index] * learningRate) );
+				updateWeightAndCache(weight);
+			}
+			else if (signum > ZERO_WEIGHT)
+			{
+				// update learning rate, weight and cache
+				this->setLearningRate( m_index, min(this->getMaxRate(), this->getUpRate() * learningRate) );
+				updateWeightAndCache(weight);
+			}
+			else
+			{
+				// update neither learning-param nor weight and don't cache the last gradient
+				m_gradientCache2[m_index] = m_gradientCache[m_index];
+				m_gradientCache[m_index] = ZERO_WEIGHT;
+			}
+
+			// move to the next weight
+			++m_index;
+		}
+
+		void reset()
+		{
+			const size_t weightsCount = this->m_network.getWeightsCount();
+			ConstantInitializer<WeightType> init(0);
+			init(m_gradientCache, weightsCount);
+			init(m_gradientCache2, weightsCount);
+			init(m_q, weightsCount);
+		}
+
+	protected:
+		WeightType *m_gradientCache, *m_gradientCache2, *m_q;
+		WeightType *m_gradient;
+		RateType m_maxRate, m_minRate;
+		size_t m_index;
+
+		static const RateType DEF_UP_RATE, DEF_DOWN_RATE;
+		static const RateType DEF_MAX_RATE, DEF_MIN_RATE;
+
+		inline void updateWeightAndCache(WeightType& weight)
+		{
+			weight -= this->getLearningRate(m_index) * sgn( m_gradient[m_index] );
+			m_gradientCache2[m_index] = m_gradientCache[m_index];
+			m_gradientCache[m_index]  = m_gradient[m_index];
+		}
+	};
+
+	template <typename NetworkT>
+	const typename QRpropUpdater<NetworkT>::RateType QRpropUpdater<NetworkT>::DEF_UP_RATE
+		= static_cast<typename QRpropUpdater<NetworkT>::RateType>( 1.2f );
+	
+	template <typename NetworkT>
+	const typename QRpropUpdater<NetworkT>::RateType QRpropUpdater<NetworkT>::DEF_DOWN_RATE
+		= static_cast<typename QRpropUpdater<NetworkT>::RateType>( 0.6f );
+	
+	template <typename NetworkT>
+	const typename QRpropUpdater<NetworkT>::RateType QRpropUpdater<NetworkT>::DEF_MAX_RATE
+		= static_cast<typename QRpropUpdater<NetworkT>::RateType>( 3.0f );
+	
+	template <typename NetworkT>
+	const typename QRpropUpdater<NetworkT>::RateType QRpropUpdater<NetworkT>::DEF_MIN_RATE
+		= static_cast<typename QRpropUpdater<NetworkT>::RateType>( 0.05f );
 
 }
 

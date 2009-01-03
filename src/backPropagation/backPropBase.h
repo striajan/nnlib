@@ -24,7 +24,7 @@ namespace NNLib
 		typedef OutputType ErrorType;
 		typedef WeightsStepsEvalT<NetworkType> WeightsStepsEvalType;
 		typedef WeightsUpdaterT<NetworkType> WeightsUpdaterType;
-		
+
 		/** Init algorithm for the given network. */
 		BackPropBase(NetworkType& network) :
 		WeightsStepsEvalType(network),
@@ -39,21 +39,27 @@ namespace NNLib
 			deleteWeightsBuffer(m_gradient);
 		}
 
-		/** Run the back-propagation algorithm. */
+		template <typename DataAccessT>
+		inline void run(DataAccessT& accessor)
+		{
+			AlwaysContinue continuator;
+			return run(accessor, continuator);
+		}
+
 		template <typename DataAccessT, typename ContinuatorT>
 		void run(DataAccessT& accessor, ContinuatorT& continuator)
 		{
 			for ( accessor.begin(); !accessor.isEnd(); accessor.next() )
 			{
 				const typename DataAccessT::DataType& pattern = accessor.current();
-				
+
 				// get output for the given input
 				m_network.eval( pattern.getInput() );
-				
+
 				// check the continuation condition
 				if ( !continuator() )
 					break;
-				
+
 				// run one step of the back-propagation algorithm
 				evalGradient( pattern.getInput(), pattern.getOutput(), m_gradient );
 				updateWeights( m_gradient );
@@ -66,7 +72,7 @@ namespace NNLib
 		{
 			run(accessor);
 		}
-		
+
 	protected:
 		/** Network that should be trained. */
 		NetworkType& m_network;
@@ -77,7 +83,7 @@ namespace NNLib
 	private:
 		BackPropBase& operator=(const BackPropBase&);
 	};
-	
+
 }
 
 #endif

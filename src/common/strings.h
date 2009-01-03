@@ -13,7 +13,12 @@ namespace NNLib
 	class ToString
 	{
 	public:
-		operator std::string() const
+		inline operator std::string() const
+		{
+			return toString();
+		}
+
+		inline std::string toString() const
 		{
 			return m_ostream.str();
 		}

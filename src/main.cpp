@@ -40,8 +40,8 @@ int main(int, char *[])
 	const ConstantInitializer<float> CONST_INIT(1);
 	const float INPUTS[INPUTS_COUNT] = {1,1,1,1};
 	const float OUTPUTS[OUTPUTS_COUNT] = {1,1,1,1};
-	const size_t ITERS_COUNT = 2;
-	const size_t CYCLES_COUNT = 1000;
+	const size_t ITERS_COUNT = 1;
+	const size_t CYCLES_COUNT = 100000;
 
 	// activation functions
 	SigmoidFunc<float> sigm;
@@ -120,17 +120,20 @@ int main(int, char *[])
 	typedef BackPropBase<Network, DeltaGradientEvaluator, DeltaBarDeltaUpdater> DeltaBarDelta;
 	typedef BackPropBase<Network, DeltaGradientEvaluator, SuperSABUpdater> SuperSAB;
 	typedef BackPropBase<Network, DeltaGradientEvaluator, QuickpropUpdater> Quickprop;
+	typedef BackPropBase<Network, DeltaGradientEvaluator, RpropUpdater> Rprop;
+	typedef BackPropBase<Network, DeltaGradientEvaluator, QRpropUpdater> QRprop;
 	//StandardBackProp back(net);
 	//SilvaAlmeida back(net);
-	DeltaBarDelta back(net);
+	//DeltaBarDelta back(net);
 	//SuperSAB back(net);
 	//Quickprop back(net);
-	back.setLearningRate(0.3f);
+	//Rprop back(net);
+	QRprop back(net);
+	back.setLearningRate(0.2f);
 
 	// continuator
-	//AlwaysContinue continuator;
-	typedef AverageErrorContinuator<Network, ItAccess, ManhattanDistance> Continuator;
-	Continuator continuator(net, itAccess, 0.08f, 1);
+	typedef ErrorContinuator<Network, ItAccess, MaxDistance> Continuator;
+	Continuator continuator(net, itAccess, 0.001f);
 	
 	// run back-propagation and print the result
 	back.run(itAccess, continuator);
