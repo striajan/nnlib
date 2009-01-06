@@ -303,6 +303,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\data\dataOnNetworkStats.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\data\inOutData.h"
 				>
 			</File>
@@ -339,7 +343,15 @@
 			Name="backPropagation"
 			>
 			<File
+				RelativePath="..\src\backPropagation\accumulator.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\backPropagation\backPropBase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\continuator.cpp"
 				>
 			</File>
 			<File
@@ -360,6 +372,10 @@
 			</File>
 			<File
 				RelativePath="..\src\backPropagation\learningRate.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\backPropagation\monitor.h"
 				>
 			</File>
 			<File

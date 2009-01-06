@@ -4,6 +4,8 @@
 #include <vector>
 #include "common/exceptions.h"
 #include "common/utils.h"
+#include "common/random.h"
+#include "initializers/randomInitializer.h"
 
 namespace NNLib
 {
@@ -50,6 +52,13 @@ namespace NNLib
 			typename LayersList::iterator end = m_layers.end();
 			for (typename LayersList::iterator it = m_layers.begin(); it != end; ++it)
 				(*it)->initWeights(initializer);
+		}
+
+		void initWeightsUniform(const Range<WeightType>& weightsRange)
+		{
+			RandomUniform<WeightType> random(weightsRange);
+			RandomInitializer<WeightType> init(random);
+			initWeights(init);
 		}
 
 		void pushLayer(LayerType *layer)
@@ -147,6 +156,16 @@ namespace NNLib
 			m_layers.clear();
 		}
 	};
+	
+	
+	/** Print all the layers of the network to the given output stream. */
+	template <typename LayerT>
+	std::ostream& operator<<(std::ostream& os, const FeedForwardNetwork<LayerT>& net)
+	{
+		for (size_t layer = 0; layer < net.getLayersCount(); ++layer)
+			os << "Layer " << (layer + 1) << ":\n" << net[layer];
+		return os;
+	}
 
 }
 

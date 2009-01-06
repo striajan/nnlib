@@ -12,10 +12,10 @@ MKDIR=mkdir
 CP=cp
 CCADMIN=CCadmin
 RANLIB=ranlib
-CC=gcc.exe
-CCC=g++.exe
-CXX=g++.exe
-FC=f77.exe
+CC=gcc
+CCC=g++
+CXX=g++
+FC=
 
 # Include project Makefile
 include Makefile
@@ -25,6 +25,7 @@ OBJECTDIR=build/Debug/GNU-Linux-x86
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/home/honza/data/Dokumenty/Neuronove_site/nnlib/src/backPropagation/continuator.o \
 	${OBJECTDIR}/src/main.o
 
 # C Compiler Flags
@@ -46,6 +47,10 @@ LDLIBSOPTIONS=
 out/Debug/GNU-Linux-x86: ${OBJECTFILES}
 	${MKDIR} -p out/Debug
 	${LINK.cc} -o out/Debug/GNU-Linux-x86 ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/_ext/home/honza/data/Dokumenty/Neuronove_site/nnlib/src/backPropagation/continuator.o: /home/honza/data/Dokumenty/Neuronove\ site/nnlib/src/backPropagation/continuator.cpp 
+	${MKDIR} -p ${OBJECTDIR}/_ext/home/honza/data/Dokumenty/Neuronove_site/nnlib/src/backPropagation
+	$(COMPILE.cc) -g -Wall -Isrc -o ${OBJECTDIR}/_ext/home/honza/data/Dokumenty/Neuronove_site/nnlib/src/backPropagation/continuator.o /home/honza/data/Dokumenty/Neuronove\ site/nnlib/src/backPropagation/continuator.cpp
 
 ${OBJECTDIR}/src/main.o: src/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src

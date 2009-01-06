@@ -1,6 +1,7 @@
 #ifndef _NEURON_BASE_H_
 #define _NEURON_BASE_H_
 
+#include <ostream>
 #include "common/exceptions.h"
 #include "initializers/initializer.h"
 
@@ -11,8 +12,8 @@ namespace NNLib
 	Base neuron implementation that uses a lot of template params.
 	*/
 	template < typename T,
-		template <typename T> class ActivationFuncT,
-		template <typename T> class CombinatorT >
+		template <typename> class ActivationFuncT,
+		template <typename> class CombinatorT >
 	class NeuronBase
 	{
 	public:
@@ -92,6 +93,18 @@ namespace NNLib
 		/** Combinator of the input and weights for this neuron. */
 		CombinatorType m_combinator;
 	};
+	
+	
+	/** Print weights of the neuron to the given output stream. */
+	template <typename T,
+		template <typename> class A,
+		template <typename> class C>
+	std::ostream& operator<<(std::ostream& os, const NeuronBase<T,A,C>& neuron)
+	{
+		for (size_t i = 0; i < neuron.getInputsCount(); ++i)
+			os << neuron[i] << " ";
+		return os;
+	}
 
 }
 

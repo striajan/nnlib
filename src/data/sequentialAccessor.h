@@ -41,7 +41,7 @@ namespace NNLib
 		
 		inline bool isEnd() const
 		{
-			return ( m_counter == this->m_containter.size() );
+			return ( m_counter == this->m_container.size() );
 		}
 		
 		inline const DataType& current() const

@@ -1,6 +1,7 @@
 #ifndef _FEED_FORWARD_LAYER_
 #define _FEED_FORWARD_LAYER_
 
+#include <ostream>
 #include "common/exceptions.h"
 #include "common/utils.h"
 #include "initializers/initializer.h"
@@ -151,6 +152,16 @@ namespace NNLib
 			delete [] m_outputsCache;
 		}
 	};
+	
+	
+	/** Print neurons of the layer to the given output stream. */
+	template <typename NeuronT>
+	std::ostream& operator<<(std::ostream& os, const FeedForwardLayer<NeuronT>& layer)
+	{
+		for (size_t neuron = 0; neuron < layer.getNeuronsCount(); ++neuron)
+			os << (neuron + 1) << ": " << layer[neuron] << "\n";
+		return os;
+	}
 
 }
 

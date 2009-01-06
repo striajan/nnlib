@@ -1,8 +1,12 @@
 #ifndef _CONTINUATOR_H_
 #define _CONTINUATOR_H_
 
-#include "initializers/constantInitializer.h"
 #include <cstdlib>
+#include <ostream>
+
+#ifdef UNIX
+#	include <signal.h>
+#endif
 
 namespace NNLib
 {
@@ -35,10 +39,12 @@ namespace NNLib
 	*/
 	template <typename NetworkT,
 		typename DataAccessT,
-		template <typename> class DistanceT>
+		template <typename> class DistanceT,
+		typename ErrorAccumT>
 	class ErrorContinuator :
 		public ContinuatorBase,
-		protected DistanceT<typename NetworkT::OutputType>
+		protected DistanceT<typename NetworkT::OutputType>,
+		protected ErrorAccumT
 	{
 	public:
 		typedef NetworkT NetworkType;
@@ -47,18 +53,20 @@ namespace NNLib
 
 		/** Create continuator for the given network and given data accessor. */
 		ErrorContinuator(const NetworkType& network, const DataAccessType& accessor, ErrorType maxError) :
-		m_network(network), m_accessor(accessor), m_maxError(maxError), m_error(0)
+		m_network(network), m_accessor(accessor), m_maxError(maxError)
 		{ }
 
 		bool operator()()
 		{
-			m_error = distance( m_network.getOutputCache(),
+			m_lastError = distance( m_network.getOutputCache(),
 				m_accessor.current().getOutput(), m_network.getOutputsCount() );
-			return ( m_error > m_maxError );
+			this->accum(m_lastError);
+			return ( this->getAccumVal() > m_maxError );
 		}
 
 		inline ErrorType getMaxError() const { return m_maxError; }
-		inline ErrorType getError() const { return m_error; }
+		inline ErrorType getLastError() const { return m_lastError; }
+		inline ErrorType getError() const { return this->getAccumVal(); }
 
 	protected:
 		const NetworkType& m_network;
@@ -67,95 +75,49 @@ namespace NNLib
 		/** If an error is smaller than this value the continuation stops. */
 		const ErrorType m_maxError;
 
-		ErrorType m_error;
+		ErrorType m_lastError;
 
 	private:
 		ErrorContinuator& operator=(const ErrorContinuator&);
 	};
-
-
+	
+	
+	/** Print the error and the maximal error. */
+	template <typename A, typename B, template <typename> class C, typename D>
+	std::ostream& operator<<(std::ostream& os, const ErrorContinuator<A,B,C,D>& error)
+	{
+		os << "last=" << error.getLastError() << " overall=" << error.getError();
+		return os;
+	}
+	
+	
 	/**
-	This continuator computes the average error on the network's output over the given
-	count of iterations. If this error is smaller than the given error it tells that
-	no continuation is needed.
+	Console input continuator which fails if exit sequence Ctrl+C was entered.
 	*/
-	template <typename NetworkT,
-		typename DataAccessT,
-		template <typename> class DistanceT>
-	class AverageErrorContinuator :
-		public ContinuatorBase,
-		protected DistanceT<typename NetworkT::OutputType>
+	class ConsoleInterruptionContinuator :
+		public ContinuatorBase
 	{
 	public:
-		typedef NetworkT NetworkType;
-		typedef typename NetworkType::OutputType ErrorType;
-		typedef DataAccessT DataAccessType;
-
-		/** Create continuator for the given network and given data accessor. */
-		AverageErrorContinuator(const NetworkType& network, const DataAccessType& accessor,
-			ErrorType maxError, size_t memoryCapacity) :
-		m_network(network), m_accessor(accessor), m_maxError(maxError), m_capacity(memoryCapacity)
+		ConsoleInterruptionContinuator()
 		{
-			m_memory = new ErrorType[m_capacity];
-			resetMemory();
+			#ifdef UNIX
+				signal(SIGINT, signalHandler);
+			#endif
+			s_continue = true;
 		}
-
-		~AverageErrorContinuator()
+		
+		inline bool operator()() const
 		{
-			delete [] m_memory;
+			return s_continue;
 		}
-
-		bool operator()()
+		
+		static void signalHandler(int)
 		{
-			// move to the next position in history and increase size if needed
-			m_pos = (m_pos + 1) % m_capacity;
-			if (m_size < m_capacity)
-				++m_size;
-
-			// subtract the oldest error
-			m_errorSum -= m_memory[m_pos];
-
-			// compute the current error
-			m_memory[m_pos] = distance( m_network.getOutputCache(), m_accessor.current().getOutput(),
-				m_network.getOutputsCount() );
-			
-			// compute the average error
-			m_errorSum += m_memory[m_pos];
-			m_averageError = m_errorSum / static_cast<ErrorType>(m_size);
-
-			return ( m_averageError > m_maxError );
+			s_continue = false;
 		}
-
-		inline ErrorType getMaxError() const { return m_maxError; }
-		inline ErrorType getAverageError() const { return m_averageError; }
-		inline ErrorType getLastError() const { return m_memory[m_pos]; }
-
+		
 	protected:
-		const NetworkType& m_network;
-		const DataAccessType& m_accessor;
-
-		/** If average error is smaller than this value the continuation stops. */
-		const ErrorType m_maxError;
-
-		/** Capacity of the memory from which the average error is being computed. */
-		const size_t m_capacity;
-
-		ErrorType *m_memory;
-		ErrorType m_errorSum;
-		ErrorType m_averageError;
-		size_t m_size;
-		size_t m_pos;
-
-		inline void resetMemory()
-		{
-			ConstantInitializer<ErrorType>(0)(m_memory, m_capacity);
-			m_errorSum = 0;
-			m_size = 0;
-			m_pos = m_capacity - 1;
-		}
-
-	private:
-		AverageErrorContinuator& operator=(const AverageErrorContinuator&);
+		static bool s_continue;
 	};
 
 }

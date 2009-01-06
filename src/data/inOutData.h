@@ -2,6 +2,7 @@
 #define _IN_OUT_DATA_H_
 
 #include <vector>
+#include <istream>
 #include "common/utils.h"
 #include "common/exceptions.h"
 
@@ -100,6 +101,33 @@ namespace NNLib
 		
 		inline size_t getInputLen() const { return m_inputLen; }
 		inline size_t getOutputLen() const { return m_outputLen; }
+
+		/** Load data from the given stream. */
+		void load(std::istream& is, char pairsDelim = '\n')
+		{
+			InputType *in = new InputType[m_inputLen];
+			OutputType *out = new OutputType[m_outputLen];
+
+			while ( !is.eof() )
+			{
+				// load string representing one input-output pair
+				std::string pairString;
+				std::getline(is, pairString, pairsDelim);
+				
+				//// parse string to input and output vectors
+				std::istringstream pairStream(pairString);
+				for (size_t i = 0; i < m_inputLen; ++i)
+					pairStream >> in[i];
+				for (size_t i = 0; i < m_outputLen; ++i)
+					pairStream >> out[i];
+
+				// add pair to data
+				add(in, out);
+			}
+
+			delete [] in;
+			delete [] out;
+		}
 
 	private:
 		// input and output vector lengths

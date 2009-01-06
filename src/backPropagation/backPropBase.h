@@ -3,6 +3,7 @@
 
 #include "feedForward/networkBufferAllocator.h"
 #include "backPropagation/continuator.h"
+#include "backPropagation/monitor.h"
 
 namespace NNLib
 {
@@ -43,11 +44,12 @@ namespace NNLib
 		inline void run(DataAccessT& accessor)
 		{
 			AlwaysContinue continuator;
-			return run(accessor, continuator);
+			EmptyMonitor monitor;
+			return run(accessor, continuator, monitor);
 		}
 
 		template <typename DataAccessT, typename ContinuatorT>
-		void run(DataAccessT& accessor, ContinuatorT& continuator)
+		void run(DataAccessT& accessor, ContinuatorT& continuator, Monitor& monitor)
 		{
 			for ( accessor.begin(); !accessor.isEnd(); accessor.next() )
 			{
@@ -63,6 +65,9 @@ namespace NNLib
 				// run one step of the back-propagation algorithm
 				evalGradient( pattern.getInput(), pattern.getOutput(), m_gradient );
 				updateWeights( m_gradient );
+
+				// monitor run of the back-propagation algorithm
+				monitor();
 			}
 		}
 

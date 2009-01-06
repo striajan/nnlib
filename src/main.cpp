@@ -1,149 +1,98 @@
 #include <iostream>
+#include <iomanip>
+#include <fstream>
 #include "common/range.h"
 #include "common/random.h"
 #include "activationFunctions/sigmoidFunc.h"
-#include "activationFunctions/heavisideStepFunc.h"
-#include "activationFunctions/symmetricSigmoidFunc.h"
-#include "activationFunctions/tabbedSigmoidFunc.h"
 #include "combinators/dotProduct.h"
-#include "combinators/dotProductSSE.h"
 #include "neurons/neuronBase.h"
-#include "neurons/perceptron.h"
 #include "feedForward/feedForwardLayer.h"
 #include "feedForward/feedForwardNetwork.h"
 #include "initializers/randomInitializer.h"
-#include "initializers/constantInitializer.h"
 #include "data/inOutData.h"
 #include "data/sequentialAccessor.h"
-#include "data/randomAccessor.h"
 #include "data/iterCycleAccessor.h"
+#include "data/dataOnNetworkStats.h"
 #include "backPropagation/backPropBase.h"
 #include "backPropagation/gradientEvaluator.h"
 #include "backPropagation/weightsUpdater.h"
 #include "backPropagation/continuator.h"
 #include "backPropagation/distance.h"
+#include "backPropagation/monitor.h"
+#include "backPropagation/accumulator.h"
 
 using namespace NNLib;
-using std::cout;
-using std::endl;
-using std::exception;
 
-int main(int, char *[])
-{
-	// common
-	const size_t INPUTS_COUNT = 4;
-	const size_t H1_COUNT = 2;
-	const size_t OUTPUTS_COUNT = 4;
-	const Range<float> RANGE(-1, 1);
-	const RandomUniform<float> RAND_GEN(RANGE);
-	const RandomInitializer<float> RAND_INIT(RAND_GEN);
-	const ConstantInitializer<float> CONST_INIT(1);
-	const float INPUTS[INPUTS_COUNT] = {1,1,1,1};
-	const float OUTPUTS[OUTPUTS_COUNT] = {1,1,1,1};
-	const size_t ITERS_COUNT = 1;
+void identity()
+{	
+	// params
+	const size_t INPUTS_COUNT  = 3;
+	const size_t OUTPUTS_COUNT = 3;
+	const size_t ITERS_COUNT  = 1;
 	const size_t CYCLES_COUNT = 100000;
-
-	// activation functions
-	SigmoidFunc<float> sigm;
-	cout << sigm(0) << endl;
-	HeavisideStepFunc<float> heav;
-	cout << heav(0) << endl;
-	SymmetricSigmoidFunc<float> sym;
-	cout << sym(0) << endl;
-	
-	// tabbed sigmoid
-	TabbedSigmoidFunc<float>::init(1.0f, 0.001f);
-	const float SIGM_TEST[7] = {-3.004f, -2.0009f, -1.09f, 0, 1, 2, 3};
-	TabbedSigmoidFunc<float> tabSigm;
-	for (size_t i = 0; i < 7; ++i)
-		cout << "(" << sigm(SIGM_TEST[i]) << "," << tabSigm(SIGM_TEST[i]) << ") ";
-	cout << endl;
-
-	// neuron 1 - base with symmetric sigmoid and dot product
-	NeuronBase<float, SymmetricSigmoidFunc, DotProduct> n1(INPUTS_COUNT);
-	try { n1.getWeight(INPUTS_COUNT); }
-	catch (exception& ex) { cout << ex.what() << endl; }
-
-	// neuron 2 - classic with sigmoid and dot product
-	NeuronBase<float, SigmoidFunc, DotProduct> n2(INPUTS_COUNT);
-
-	// random
-	Random<float>::reset();
-	RandomUniform<float> random(RANGE);
-	cout << random.next() << endl;
-
-	// perceptron - heaviside step function and dot product
-	Perceptron<float> perc(INPUTS_COUNT);
-	perc.initWeightsUniform(RANGE);
-	float res = perc.eval(INPUTS);
-	cout << res << endl;
+	const float LEARNING_RATE = 0.4f;
+	const float MAX_ERROR = 0.005f;
+	const size_t MONITOR_FREQUENCY = 99999;
+	const char INPUT_FILE[] = "data/identity.in";
 
 	// feed-forward network typedefs
 	typedef NeuronBase<float, SigmoidFunc, DotProduct> Neuron;
 	typedef FeedForwardLayer<Neuron> Layer;
 	typedef FeedForwardNetwork<Layer> Network;
 
-	// network creation and initialization
-	Network::LayersSizes sizes(2);
-	sizes[0] = H1_COUNT;
-	sizes[1] = OUTPUTS_COUNT;
+	// create layered network
+	Network::LayersSizes sizes(3);
+	sizes[0] = 2;
+	sizes[1] = 5;
+	sizes[2] = OUTPUTS_COUNT;
 	Network net(INPUTS_COUNT, sizes);
-	net.initWeights(RAND_INIT);
 
-	cout << net.getInputsCount() << " " << net.getOutputsCount() << " " <<
-		net.getLayersCount() << endl;
-	
-	const Network::OutputType *out = net.eval(INPUTS);
-	for (size_t i = 0; i < net.getOutputsCount(); ++i)
-		cout << out[i] << " ";
-	cout << endl;
-	
-	// data typedefs
-	typedef InOutPair<float> TrainPatt;
-	typedef InOutData<TrainPatt> TrainData;
-	typedef RandomAccessor<TrainData> RandAccess;
-	typedef SequentialAccessor<TrainData> SeqAccess;
-	typedef IterCycleAccessor<TrainData> ItAccess;
-	
+	// init weights randomly
+	net.initWeightsUniform( Range<float>(-1, 1) );
+
 	// data initialization
+	typedef InOutData< InOutPair<float> > TrainData;
 	TrainData data(INPUTS_COUNT, OUTPUTS_COUNT);
-	data.add(INPUTS, OUTPUTS);
+	std::ifstream inputFile(INPUT_FILE);
+	if ( inputFile.is_open() )
+		data.load(inputFile);
 	
-	// iter cycle data accessor test
-	ItAccess itAccess(data, ITERS_COUNT, CYCLES_COUNT);
-	for ( itAccess.begin(); !itAccess.isEnd(); itAccess.next() )
-		itAccess.current();
-
-	// back-propagation algorithms
-	typedef BackPropBase<Network, DeltaGradientEvaluator, StandardUpdater> StandardBackProp;
-	typedef BackPropBase<Network, DeltaGradientEvaluator, SilvaAlmeidaUpdater> SilvaAlmeida;
-	typedef BackPropBase<Network, DeltaGradientEvaluator, DeltaBarDeltaUpdater> DeltaBarDelta;
-	typedef BackPropBase<Network, DeltaGradientEvaluator, SuperSABUpdater> SuperSAB;
-	typedef BackPropBase<Network, DeltaGradientEvaluator, QuickpropUpdater> Quickprop;
-	typedef BackPropBase<Network, DeltaGradientEvaluator, RpropUpdater> Rprop;
-	typedef BackPropBase<Network, DeltaGradientEvaluator, QRpropUpdater> QRprop;
-	//StandardBackProp back(net);
-	//SilvaAlmeida back(net);
-	//DeltaBarDelta back(net);
-	//SuperSAB back(net);
-	//Quickprop back(net);
-	//Rprop back(net);
-	QRprop back(net);
-	back.setLearningRate(0.2f);
+	// data accessor creation
+	typedef IterCycleAccessor<TrainData> ItAccessor;
+	ItAccessor accessor(data, ITERS_COUNT, CYCLES_COUNT);
 
 	// continuator
-	typedef ErrorContinuator<Network, ItAccess, MaxDistance> Continuator;
-	Continuator continuator(net, itAccess, 0.001f);
-	
-	// run back-propagation and print the result
-	back.run(itAccess, continuator);
-	out = net.eval(INPUTS);
-	for (size_t i = 0; i < net.getOutputsCount(); ++i)
-		cout << out[i] << " ";
-	cout << endl;
-	
-	// delete
-	TabbedSigmoidFunc<float>::finish();
+	typedef ErrorContinuator< Network, ItAccessor, MaxDistance,
+		MaxAccumulator<float,8> > Continuator;
+	Continuator continuator(net, accessor, MAX_ERROR);
 
+	// monitors
+	CombinedMonitor monitor;
+	ParamMonitor<ItAccessor> m1(std::cout, accessor, MONITOR_FREQUENCY);
+	monitor.add(m1);
+	ParamMonitor<Continuator> m2(std::cout, continuator, MONITOR_FREQUENCY);
+	monitor.add(m2);
+
+	// back-propagation
+	typedef BackPropBase<Network, DeltaGradientEvaluator,
+		StandardUpdater> DeltaBarDelta;
+	DeltaBarDelta back(net);
+	back.setLearningRate(LEARNING_RATE);
+	back.run(accessor, continuator, monitor);
+
+	// test
+	typedef SequentialAccessor<TrainData> SeqAccessor;
+	SeqAccessor seq(data);
+	typedef DataOnNetworkStats<Network, SeqAccessor, MaxDistance> Stats;
+	Stats stats(net, seq);
+	std::cout << std::endl << setiosflags(std::ios_base::fixed) <<
+		std::setprecision(3);
+	std::cout << "STATISTICS:\n" << stats << std::endl;
+	//std::cout << "WEIGHTS:\n" << net << std::endl;
+}
+
+int main(int, char *[])
+{
+	identity();
 	return 0;
 }

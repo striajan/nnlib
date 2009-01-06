@@ -1,12 +1,12 @@
 #ifndef _CYCLE_ITER_ACCESSOR_H_
 #define	_CYCLE_ITER_ACCESSOR_H_
 
-#include <iostream>
+#include <ostream>
 #include "data/dataAccessorBase.h"
 
 namespace NNLib
 {
-
+	
 	/**
 	Access the data in a sequential order in cycles and iterationss.
 	*/
@@ -24,7 +24,9 @@ namespace NNLib
 		IterCycleAccessor(const ContainerType& container,
 		size_t itersCount = 1, size_t cyclesCount = 1) :
 		_DataAccessorBase(container),
-		m_itersCount(itersCount), m_cyclesCount(cyclesCount)
+		m_itersCount(itersCount), m_pattsCount( container.size() ),
+		m_cyclesCount(cyclesCount), m_cycleLen( itersCount * container.size() ),
+		m_totalLen( itersCount * container.size() * cyclesCount )
 		{
 			begin();
 		}
@@ -33,38 +35,19 @@ namespace NNLib
 		
 		inline void begin()
 		{
-			m_pos = 0;
-			m_cycle = m_iter = 1;
-			m_end = (this->m_container.size() == 0) ||
-				(m_iter > m_itersCount) || (m_cycle > m_cyclesCount);
+			m_pos = m_globalPos = 0;
 		}
 		
 		inline void next()
 		{
-			if (!m_end) {
-				if (m_iter == m_itersCount) {
-					if (m_pos == this->m_container.size() - 1) {
-						if (m_cycle == m_cyclesCount)
-							m_end = true;
-						else {
-							m_iter = 1;
-							m_pos = 0;
-							++m_cycle;
-						}
-					}
-					else {
-						m_iter = 1;
-						++m_pos;
-					}
-				}
-				else
-					++m_iter;
-			}
+			++m_globalPos;
+			m_pos = (m_globalPos % m_cycleLen) / m_itersCount;
 		}
 		
 		inline bool isEnd() const
 		{
-			return m_end;
+			return (m_pattsCount == 0) ||
+				( (m_globalPos >= m_totalLen) && (m_totalLen > 0) );
 		}
 		
 		inline const DataType& current() const
@@ -72,22 +55,43 @@ namespace NNLib
 			return this->m_container[m_pos];
 		}
 		
+		inline size_t getIter() const { return (m_globalPos % m_itersCount) + 1; }
+		inline size_t getItersCount() const { return m_itersCount; }
+		inline size_t getPatt() const { return m_pos + 1; }
+		inline size_t getPattsCount() const { return m_pattsCount; }
+		inline size_t getCycle() const { return (m_globalPos / m_cycleLen) + 1; }
+		inline size_t getCyclesCount() const { return m_cyclesCount; }
+		inline size_t getProgress() const { return m_globalPos + 1; }
+		inline size_t getTotalLen() const { return m_totalLen; }
+		
 	protected:
-		/** Current position in a data container. */
-		size_t m_pos;
-		
 		const size_t m_itersCount;
+		const size_t m_pattsCount;
 		const size_t m_cyclesCount;
-		
-		// current iteration and cycle
-		size_t m_iter;
-		size_t m_cycle;
+		const size_t m_cycleLen;
+		const size_t m_totalLen;
+		size_t m_globalPos;
+		size_t m_pos;
 
-		/** Informs whether the end was already reached. */
-		bool m_end;
-
+	private:
 		IterCycleAccessor& operator=(const IterCycleAccessor&);
 	};
+
+
+	/** Print informations about this iter-pattern-cycle accessor
+	to the given output stream. */
+	template <typename ContT>
+	std::ostream& operator<<(std::ostream& os, const IterCycleAccessor<ContT>& access)
+	{
+		const bool inf = (access.getCyclesCount() == 0);
+		os << "iter=" << access.getIter() << "/" << access.getItersCount() <<
+			" pattern=" << access.getPatt() << "/" << access.getPattsCount() <<
+			" cycle=" << access.getCycle() << "/";
+		inf ? (os << "inf") : ( os << access.getCyclesCount() );
+		os << " total=" << access.getProgress() << "/";
+		inf ? (os << "inf") : ( os << access.getTotalLen() );
+		return os;
+	}
 
 }
 

@@ -18,12 +18,15 @@
       <logicalFolder name="backPropagation"
                      displayName="backPropagation"
                      projectFiles="true">
+        <itemPath>/home/honza/data/Dokumenty/Neuronove site/nnlib/src/backPropagation/accumulator.h</itemPath>
         <itemPath>src/backPropagation/backPropBase.h</itemPath>
+        <itemPath>/home/honza/data/Dokumenty/Neuronove site/nnlib/src/backPropagation/continuator.cpp</itemPath>
         <itemPath>src/backPropagation/continuator.h</itemPath>
         <itemPath>src/backPropagation/distance.h</itemPath>
         <itemPath>src/backPropagation/gradientEvaluator.h</itemPath>
         <itemPath>src/backPropagation/learningMomentum.h</itemPath>
         <itemPath>src/backPropagation/learningRate.h</itemPath>
+        <itemPath>src/backPropagation/monitor.h</itemPath>
         <itemPath>src/backPropagation/weightsUpdater.h</itemPath>
       </logicalFolder>
       <logicalFolder name="combinators" displayName="combinators" projectFiles="true">
@@ -43,6 +46,7 @@
       <logicalFolder name="data" displayName="data" projectFiles="true">
         <itemPath>src/data/dataAccessor.h</itemPath>
         <itemPath>src/data/dataAccessorBase.h</itemPath>
+        <itemPath>src/data/dataOnNetworkStats.h</itemPath>
         <itemPath>src/data/inOutData.h</itemPath>
         <itemPath>src/data/iterCycleAccessor.h</itemPath>
         <itemPath>src/data/randomAccessor.h</itemPath>
@@ -98,6 +102,12 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/honza/data/Dokumenty/Neuronove site/nnlib/src/backPropagation/accumulator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/honza/data/Dokumenty/Neuronove site/nnlib/src/backPropagation/continuator.cpp">
+        <itemTool>1</itemTool>
+      </item>
       <item path="src/activationFunctions/activationFunc.h">
         <itemTool>3</itemTool>
       </item>
@@ -143,6 +153,9 @@
       <item path="src/backPropagation/learningRate.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/monitor.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/backPropagation/weightsUpdater.h">
         <itemTool>3</itemTool>
       </item>
@@ -180,6 +193,9 @@
         <itemTool>3</itemTool>
       </item>
       <item path="src/data/dataAccessorBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/dataOnNetworkStats.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/data/inOutData.h">
@@ -252,6 +268,12 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/honza/data/Dokumenty/Neuronove site/nnlib/src/backPropagation/accumulator.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="/home/honza/data/Dokumenty/Neuronove site/nnlib/src/backPropagation/continuator.cpp">
+        <itemTool>1</itemTool>
+      </item>
       <item path="src/activationFunctions/activationFunc.h">
         <itemTool>3</itemTool>
       </item>
@@ -297,6 +319,9 @@
       <item path="src/backPropagation/learningRate.h">
         <itemTool>3</itemTool>
       </item>
+      <item path="src/backPropagation/monitor.h">
+        <itemTool>3</itemTool>
+      </item>
       <item path="src/backPropagation/weightsUpdater.h">
         <itemTool>3</itemTool>
       </item>
@@ -334,6 +359,9 @@
         <itemTool>3</itemTool>
       </item>
       <item path="src/data/dataAccessorBase.h">
+        <itemTool>3</itemTool>
+      </item>
+      <item path="src/data/dataOnNetworkStats.h">
         <itemTool>3</itemTool>
       </item>
       <item path="src/data/inOutData.h">
